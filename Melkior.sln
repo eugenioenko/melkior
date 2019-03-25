@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.438
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Melkior", "Melkior\Melkior.csproj", "{C0244548-AFDE-4A09-8548-66CD2C2A4677}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Tools\Generator.csproj", "{1C499E2E-F738-4205-BC69-374FA7898940}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0244548-AFDE-4A09-8548-66CD2C2A4677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0244548-AFDE-4A09-8548-66CD2C2A4677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0244548-AFDE-4A09-8548-66CD2C2A4677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0244548-AFDE-4A09-8548-66CD2C2A4677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C499E2E-F738-4205-BC69-374FA7898940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C499E2E-F738-4205-BC69-374FA7898940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C499E2E-F738-4205-BC69-374FA7898940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C499E2E-F738-4205-BC69-374FA7898940}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D70C223-0D66-453B-9B1E-83299918EA31}
+	EndGlobalSection
+EndGlobal
