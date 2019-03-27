@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +6,7 @@ namespace Melkior
 {
     class Any : IEquatable<Any>
     {
-        public readonly object value;
+        public object value;
         public readonly DataType type;
 
         public Any(object value, DataType type)
@@ -48,11 +48,16 @@ namespace Melkior
 
         public void Set(Any key, Any value)
         {
-            if (this is Entity)
+            if (this is Array)
             {
-                (this as Entity).Set(key, value);
+                (this as Array).Set(key, value);
+                return;
             }
-            return;
+            if (this is Dict)
+            {
+                (this as Dict).Set(key, value);
+                return;
+            }
             throw new MelkiorError(key + " does not exist in" + this);
         }
 

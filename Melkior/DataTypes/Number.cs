@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 namespace Melkior
 {
     class Number : Any
     {
-        public new double value;
 
         public Number(double value) : base(value, DataType.Number) {
             this.value = value;  

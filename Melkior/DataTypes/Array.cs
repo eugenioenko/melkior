@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 
@@ -7,7 +8,6 @@ namespace Melkior
 {
     class Array : Any
     {
-        public new readonly List<Any> value;
 
         public Array(List<Any> value) : base(value, DataType.Array) {
             this.value = value;
@@ -17,7 +17,16 @@ namespace Melkior
         {
             if (key.IsNumber())
             {
-                return value[Convert.ToInt32(key.value)];
+                try
+                {
+                    return (value as List<Any>)[Convert.ToInt32(key.value)];
+                }
+                catch
+                {
+                    var length = (value as List<Any>).Count;
+                    return new Any(null, DataType.Null);
+                }
+               
             }
             throw new MelkiorError(key + " does not exist in" + this);
         }
@@ -26,14 +35,24 @@ namespace Melkior
         {
             if (key.IsNumber())
             {
-                 this.value[(int)key.value] = value;
+                var index = Convert.ToInt32(key.value);
+                var length = (this.value as List<Any>).Count;
+
+                if (index >= length)
+                {
+                    (this.value as List<Any>).AddRange(Enumerable.Repeat(new Any(null, DataType.Null), index - length + 1));
+                }                
+                 
+                (this.value as List<Any>)[index] = value;
+                return;
+             
             }
             throw new MelkiorError(key + " is not a valid index for array " + this);
         }
 
         public new string ToString()
         {
-            return "<Array[" + value.Count + "]>";
+            return "<Array[" + (value as List<Any>).Count + "]>";
         }
     }
 

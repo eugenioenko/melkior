@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,8 +7,6 @@ namespace Melkior
 {
     class String : Any
     {
-        public new string value;
-
         public String(string value) : base(value, DataType.String) {
             this.value = value;
         }
@@ -17,7 +15,7 @@ namespace Melkior
         {
             if (key.value.ToString() == "length")
             {
-                return new Number(value.Length);
+                return new Number((value as string).Length);
             }
             throw new MelkiorError(key + " does not exist in" + this);
         }
