@@ -28,6 +28,22 @@ namespace Melkior
                 }
                
             }
+            if (key.IsString())
+            {
+                switch (key.value)
+                {
+                    case "length":
+                        return new Number((value as List<Any>).Count);
+                    case "size":
+                        return Runtime.ArrayLength;
+                        /*return new Callable(
+                            (Interpreter inter, Any thiz, List<Any> args) => {
+                                return new Number((value as List<Any>).Count);
+                            }
+                        );*/
+                   
+                }
+            }
             throw new MelkiorError(key + " does not exist in" + this);
         }
 

@@ -59,7 +59,6 @@
     <Compile Include="DataTypes\Array.cs" />
     <Compile Include="DataTypes\Boolean.cs" />
     <Compile Include="DataTypes\Dict.cs" />
-    <Compile Include="DataTypes\Entity.cs" />
     <Compile Include="DataTypes\DataType.cs" />
     <Compile Include="DataStructures\Error.cs" />
     <Compile Include="DataStructures\Expressions.cs" />
@@ -70,6 +69,7 @@
     <Compile Include="Parser.cs" />
     <Compile Include="DataStructures\Prototype.cs" />
     <Compile Include="DataStructures\Return.cs" />
+    <Compile Include="Runtime.cs" />
     <Compile Include="Scanner.cs" />
     <Compile Include="Melkior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

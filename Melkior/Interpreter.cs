@@ -107,13 +107,13 @@ namespace Melkior
                 args.Add(Evaluate(argument));
             }
 
-            if (callee.type != DataType.Function || callee.value.GetType() != typeof(Function))
+            if (callee.type != DataType.Function || !(callee is Callable))
             {
-                Error("Runtime Error" + callee + "is not a function");
+                Error("Runtime Error" + callee + " is not a function");
             }
 
             // todo add aritiy check
-            return ((Function) callee.value).Call(this, null, args);
+            return (callee as Callable).Call(this, callee, args);
         }
 
         public Any VisitGroupingExpr(Expr.Group expr)
@@ -163,7 +163,7 @@ namespace Melkior
                 return new Any(null, DataType.Null);
             }
 
-            return new Entity(expr.value, expr.type);
+            return new Any(expr.value, expr.type);
         }
 
         public Any VisitTernaryExpr(Expr.Ternary expr)
@@ -178,9 +178,9 @@ namespace Melkior
             switch (expr.oprtr.type)
             {
                 case TokenType.Minus:
-                    return new Entity(-(double)right.value, right.type);
+                    return new Number(-(double)right.value);
                 case TokenType.Typeof:
-                    return new Entity(right.type.ToString(), DataType.String);
+                    return new String(right.type.ToString());
                 case TokenType.Not:
                     return new Boolean(!right.ToBoolean());
                 default:
@@ -196,7 +196,7 @@ namespace Melkior
 
         public Any VisitStringExpr(Expr.String expr)
         {
-            return new Entity(expr.value, DataType.String);
+            return new String(expr.value);
         }
 
         public Any VisitBlockStmt(Stmt.Block stmt)
@@ -243,7 +243,7 @@ namespace Melkior
 
         public Any VisitFunctionStmt(Stmt.Function stmt)
         {
-            var func = new Entity(new Function(stmt, scope), DataType.Function);
+            var func = new Function(stmt, scope);
             scope.Define(stmt.name.lexeme, func);
             return func;
         }
@@ -270,7 +270,7 @@ namespace Melkior
 
         public Any VisitVarStmt(Stmt.Var stmt)
         {
-            Any value = new Entity(null, DataType.Null);
+            Any value = new Any(null, DataType.Null);
 
             if (stmt.initializer != null)
             {

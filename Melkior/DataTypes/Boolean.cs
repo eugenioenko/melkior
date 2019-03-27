@@ -1,6 +1,6 @@
 namespace Melkior
 {
-    class Boolean : Entity
+    class Boolean : Any
     {
 
         public Boolean(bool value) : base(value, DataType.Boolean) {

@@ -18,13 +18,18 @@ namespace Melkior
         public Any(object value)
         {
             this.value = value;
-            this.type = DataType.Any;
+            type = DataType.Any;
+        }
+
+        public Any()
+        {
+            value = null;
+            type = DataType.Null;
         }
 
         public Any Get(Any key)
         {
             if (this is String) return (this as String).Get(key);
-            if (this is Entity) return (this as Entity).Get(key);
             if (this is Number) return (this as Number).Get(key);
             if (this is Array) return (this as Array).Get(key);
             if (this is Dict) return (this as Dict).Get(key);

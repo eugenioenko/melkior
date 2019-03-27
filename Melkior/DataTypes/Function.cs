@@ -1,43 +1,49 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Melkior
 {
 
-    interface ICallable
+    delegate Any FunctionCall(Interpreter inter, Any thiz, List<Any> args);
+
+    class Callable : Any
     {
-        int Arity();
-        Any Call(Interpreter inter, Any thiz, List<Any> args);
+        public FunctionCall Call;
+
+        public Callable() : base(null, DataType.Function)
+        {
+     
+        }
+
+        public Callable(FunctionCall call): this ()
+        {
+            Call = call;
+            value = call;
+        }
     }
 
-    class Function : ICallable
+    class Function : Callable
     {
         private Stmt.Function declaration;
         private Scope closure;
-        public Prototype prototype;
 
-        public Function(Stmt.Function declaration, Scope closure)
+        public Function(Stmt.Function declaration, Scope closure): base()
         {
             this.declaration = declaration;
             this.closure = closure;
-            this.prototype = new Prototype();
-        }
-
-        public int Arity()
-        {
-            return declaration.prms.Count;
-        }
-
-        public Any Call(Interpreter inter, Any thiz, List<Any> args)
-        {
-            Scope funcScope = new Scope(closure);
-            for (var i = 0; i < declaration.prms.Count; ++i)
+            value = this;
+           
+            Call = (Interpreter inter, Any thiz, List<Any> args) =>
             {
-                funcScope.Define(declaration.prms[i].lexeme, args[i]);
-            }
+                Scope funcScope = new Scope(closure);
+                for (var i = 0; i < declaration.prms.Count; ++i)
+                {
+                    funcScope.Define(declaration.prms[i].lexeme, args[i]);
+                }
 
-            return inter.ExecuteFuncClosure(declaration.body, funcScope);
+                return inter.ExecuteFuncClosure(declaration.body, funcScope);
+            };
         }
 
         public override string ToString()
