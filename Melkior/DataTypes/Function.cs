@@ -32,7 +32,6 @@ namespace Melkior
         {
             this.declaration = declaration;
             this.closure = closure;
-            value = this;
            
             Call = (Interpreter inter, Any thiz, List<Any> args) =>
             {

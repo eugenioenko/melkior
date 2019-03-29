@@ -1,4 +1,4 @@
-﻿namespace Melkior
+namespace Melkior
 {
     enum TokenType
     {
@@ -54,6 +54,7 @@
         While,
         Do,
         If,
+        In,
         Then,
         Else,
         Elseif,
@@ -69,6 +70,7 @@
         For,
         Return,
         Repeat,
-        Until
+        Until,
+        With
     }
 }

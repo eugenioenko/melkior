@@ -43,6 +43,7 @@ namespace generator
                 { "Return", new string[]{"Expr value"}},
                 { "Var", new string[]{"Token name", "Token type", "Expr initializer", "bool writable"}},
                 { "While", new string[]{"Expr condition", "Stmt loop"}},
+                { "Foreach", new string[]{ "Token item", "Token key", "Token array", "Stmt loop"}}
         };
   
         public static void GenerateAST(string className, Dictionary<string, string[]> ast, string filename, string imports)
