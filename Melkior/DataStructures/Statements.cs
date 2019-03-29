@@ -177,14 +177,14 @@ namespace Melkior
         {
             public Token item;
             public Token key;
-            public Token array;
+            public Token iterable;
             public Stmt loop;
 
-            public Foreach(Token item, Token key, Token array, Stmt loop)
+            public Foreach(Token item, Token key, Token iterable, Stmt loop)
             {
                 this.item = item;
                 this.key = key;
-                this.array = array;
+                this.iterable = iterable;
                 this.loop = loop;
             }
 
