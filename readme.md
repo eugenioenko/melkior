@@ -89,6 +89,22 @@ repeat
 while condition
 ```
 
+### foreach 
+```
+foreach item in array_1 do
+    print item
+end
+```
+
+foreach with index/key
+
+```
+foreach item with index in array_1 do
+    print index + ': ' + item
+end
+```
+
+
  ### functions
  In melkior the body of the function must be a statement.
  But it does not have to be a block statement.
