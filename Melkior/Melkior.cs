@@ -29,7 +29,6 @@ namespace Melkior
 
             Interpreter interpreter = new Interpreter();
             interpreter.Interpret(statements);
-            Console.ReadKey();
         }
 
         static void HelpAndVersion()
