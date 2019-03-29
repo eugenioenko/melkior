@@ -358,5 +358,27 @@ namespace Melkior
             }
             return dictionary;
         }
+
+        public Any VisitForeachStmt(Stmt.Foreach stmt)
+        {
+            string name = stmt.item.lexeme;
+            string key = stmt.key == null ? null : stmt.key.lexeme;
+            var array = scope.Get(stmt.array.lexeme).value as List<Any>;
+
+
+            int index = 0;
+            foreach (var item in array as List<Any>)
+            {
+                Scope loopScope = new Scope(scope);
+                loopScope.Define(name, item);
+                if (key != null) {
+                    loopScope.Define(key, new Number(index));
+                }
+                ExecuteFuncClosure(stmt.loop, loopScope);
+                index += 1;
+            }
+            return null;
+
+        }
     }
 }

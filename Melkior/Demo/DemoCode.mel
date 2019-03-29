@@ -54,3 +54,8 @@ var string_2 = number_1 == number_2
     nop "number_1 is not equal number_2"
 
 print string_2
+
+// foreach loop
+foreach item with index in array_1 do
+    print item + item
+end

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Melkior
@@ -171,6 +171,10 @@ namespace Melkior
             {
                 return ForStatement();
             }
+            if (Match(TokenType.Foreach))
+            {
+                return ForeachStatement();
+            }
             if (Match(TokenType.Do))
             {
                 return BlockStatement();
@@ -273,6 +277,20 @@ namespace Melkior
         private Stmt ForStatement()
         {
             throw new NotImplementedException();
+        }
+
+        private Stmt ForeachStatement()
+        {
+            Token item = Consume(TokenType.Identifier, "Expected a variable name after foreach");
+            Token key = null;
+            if (Match(TokenType.With))
+            {
+                key = Consume(TokenType.Identifier, "Expected an index name after 'with'");
+            }
+            Consume(TokenType.In, "Expected 'in' after foreach variable");
+            Token array = Consume(TokenType.Identifier, "Expected an array name in foreach");
+            Stmt loop = Statement();
+            return new Stmt.Foreach(item, key, array, loop);
         }
       
         private Stmt ExpressionStatement()

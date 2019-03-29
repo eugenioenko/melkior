@@ -15,6 +15,7 @@ namespace Melkior
             T VisitReturnStmt(Return stmt);
             T VisitVarStmt(Var stmt);
             T VisitWhileStmt(While stmt);
+            T VisitForeachStmt(Foreach stmt);
         }
 
         public abstract T Accept<T>(IVisitor<T> visitor);
@@ -169,6 +170,27 @@ namespace Melkior
             public override T Accept<T>(IVisitor<T> visitor)
             {
                  return visitor.VisitWhileStmt(this);
+            }
+        }
+
+        public class Foreach: Stmt
+        {
+            public Token item;
+            public Token key;
+            public Token array;
+            public Stmt loop;
+
+            public Foreach(Token item, Token key, Token array, Stmt loop)
+            {
+                this.item = item;
+                this.key = key;
+                this.array = array;
+                this.loop = loop;
+            }
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                 return visitor.VisitForeachStmt(this);
             }
         }
 

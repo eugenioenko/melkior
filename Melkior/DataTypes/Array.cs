@@ -35,13 +35,10 @@ namespace Melkior
                     case "length":
                         return new Number((value as List<Any>).Count);
                     case "size":
-                        return Runtime.ArrayLength;
-                        /*return new Callable(
-                            (Interpreter inter, Any thiz, List<Any> args) => {
-                                return new Number((value as List<Any>).Count);
-                            }
-                        );*/
-                   
+                        return Runtime.ArrayLength(value as List<Any>);
+                    case "each":
+                        return Runtime.ArrayEach(value as List<Any>);
+
                 }
             }
             throw new MelkiorError(key + " does not exist in" + this);
