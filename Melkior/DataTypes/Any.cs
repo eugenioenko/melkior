@@ -51,6 +51,11 @@ namespace Melkior
             return type == DataType.String;
         }
 
+        public bool IsDict()
+        {
+            return type == DataType.Dict;
+        }
+
         public void Set(Any key, Any value)
         {
             if (this is Array)

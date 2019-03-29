@@ -23,7 +23,6 @@ namespace Melkior
                 }
                 catch
                 {
-                    var length = (value as List<Any>).Count;
                     return new Any(null, DataType.Null);
                 }
                

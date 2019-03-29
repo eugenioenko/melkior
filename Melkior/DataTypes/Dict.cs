@@ -13,7 +13,14 @@ namespace Melkior
 
         public new Any Get(Any key)
         {
-            return (value as Dictionary<Any, Any>)[key];
+            try
+            {
+                return (value as Dictionary<Any, Any>)[key];
+            }
+            catch
+            {
+                return new Any(null, DataType.Null);
+            }
         }
 
         public new void Set(Any key, Any value)

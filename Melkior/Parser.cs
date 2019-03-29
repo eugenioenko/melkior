@@ -288,9 +288,9 @@ namespace Melkior
                 key = Consume(TokenType.Identifier, "Expected an index name after 'with'");
             }
             Consume(TokenType.In, "Expected 'in' after foreach variable");
-            Token array = Consume(TokenType.Identifier, "Expected an array name in foreach");
+            Token iterable = Consume(TokenType.Identifier, "Expected an array name in foreach");
             Stmt loop = Statement();
-            return new Stmt.Foreach(item, key, array, loop);
+            return new Stmt.Foreach(item, key, iterable, loop);
         }
       
         private Stmt ExpressionStatement()

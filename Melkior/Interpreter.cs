@@ -363,20 +363,42 @@ namespace Melkior
         {
             string name = stmt.item.lexeme;
             string key = stmt.key == null ? null : stmt.key.lexeme;
-            var array = scope.Get(stmt.array.lexeme).value as List<Any>;
+            var iterable = scope.Get(stmt.iterable.lexeme);
 
-
-            int index = 0;
-            foreach (var item in array as List<Any>)
+            if (iterable.IsArray())
             {
-                Scope loopScope = new Scope(scope);
-                loopScope.Define(name, item);
-                if (key != null) {
-                    loopScope.Define(key, new Number(index));
+
+                int index = 0;
+                foreach (var item in iterable.value as List<Any>)
+                {
+                    Scope loopScope = new Scope(scope);
+                    loopScope.Define(name, item);
+                    if (key != null)
+                    {
+                        loopScope.Define(key, new Number(index));
+                    }
+                    ExecuteFuncClosure(stmt.loop, loopScope);
+                    index += 1;
                 }
-                ExecuteFuncClosure(stmt.loop, loopScope);
-                index += 1;
+                return new Any(null, DataType.Null);
             }
+
+            if (iterable.IsDict())
+            {
+                foreach (var item in iterable.value as Dictionary<Any, Any>)
+                {
+                    Scope loopScope = new Scope(scope);
+                    loopScope.Define(name, item.Value);
+                    if (key != null)
+                    {
+                        loopScope.Define(key, item.Key);
+                    }
+                    ExecuteFuncClosure(stmt.loop, loopScope);
+                }
+                return new Any(null, DataType.Null);
+            }
+
+            Error(stmt.iterable + " is not an iterable collection");
             return null;
 
         }
