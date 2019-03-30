@@ -122,6 +122,34 @@ func function_2(alpha, beta)
     print alpha + beta
 ```
 
+#### Anonymous functions
+When passing a function as argument to another function its possible to use a nameless function
+```
+["green", "blue", "red"].each(
+    function(value, index, array) do
+        print index + ": " + value
+    end
+)
+```
+
+#### Lambda functions
+Lambda functions are single anonymous functions with a single return statement in their body
+
+```
+var square = [0, 1, 2, 3].map(
+    lambda(num): num * num
+)
+```
+The previous snippet is equivalent to
+
+```
+var square = [0, 1, 2, 3].map(
+    function(num) do
+        return num * num
+    end
+)
+```
+
 ### running the interpreter
 
 Execute Melkior from the console passing the source code filename as argument.
