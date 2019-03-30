@@ -5,49 +5,49 @@ This is a very early work in progress of an interpreter writen in c# of a script
 ### variable definition
 ```
 // numbers
-var number_1 = 0.00001
-var number_2 = 9999999
+var number_1 = 0.00001;
+var number_2 = 9999999;
 
 // string
-var string_1 = "string"
+var string_1 = "string";
 
 // boolean
-var boolean_1  = true
-var boolean_2 = false
+var boolean_1  = true;
+var boolean_2 = false;
 
 // array
-var array_1 = [1, 2, 3, 4, 5]
-var array_nested = ["one", "two", "three", ["nested_1", "nested_2", array_1]]
-print array_nested[3]
+var array_1 = [1, 2, 3, 4, 5];
+var array_nested = ["one", "two", "three", ["nested_1", "nested_2", array_1]];
+print array_nested[3];
 
 // dictionary
 var dict_1 = {
     entry_1: "first entry",
     entry_2: "second entry"
-}
+};
 ```
 ### control statements
 ```
 if number_1 == number_2 then
-    print "number_1 equals number_2"
+    print "number_1 equals number_2";
 else
-    print "numbe_1 is not equal number_2"
+    print "numbe_1 is not equal number_2";
 end
 
 // mutliple "else if": elseif
 
 if number_1 == number_2 then
-    print "number_1 equals number_2"
+    print "number_1 equals number_2";
 elseif number_1 == 0.00001 then
-    print "number_1 equals 0.0001"
+    print "number_1 equals 0.0001";
 else
-    print "number_1 is not 0.0001 nor number_2"
+    print "number_1 is not 0.0001 nor number_2";
 end
 
 // logical operators: and, or , not
 
 if number_1 >= 0 and number_1 < 100 then
-    print "number_1 is between 0 and 100"
+    print "number_1 is between 0 and 100";
 end
 ```
 
@@ -55,22 +55,22 @@ end
 ```
 condition
     yep "true expression"
-    nop "false expression"
+    nop "false expression";
 
 var variable_2 = variable_1 == true
     yep "variable_2 equals variable_1"
-    nop "variable_2 does not equal variable_1"
+    nop "variable_2 does not equal variable_1";
 ```
 
 ### block statement
 Inside each new block a closure is generated
 ```
-var alpha = "global"
-var beta = "global""
+var alpha = "global";
+var beta = "global"";
 do
-    var beta = "local"
-    print alpha // global
-    print beta  // local
+    var beta = "local";
+    print alpha; // global
+    print beta;  // local
 end
 ```
 ### Loop statements
@@ -84,15 +84,15 @@ end
 #### repeat while  (do while)
 ```
 repeat
-    // statement
-    // statement
+    // statement;
+    // statement;
 while condition
 ```
 
 ### foreach 
 ```
 foreach item in array_1 do
-    print item
+    print item;
 end
 ```
 
@@ -100,7 +100,7 @@ foreach with index/key
 
 ```
 foreach item with index in array_1 do
-    print index + ': ' + item
+    print index + ': ' + item;
 end
 ```
 
@@ -112,14 +112,14 @@ end
 ```
 func function_1(alpha, beta) do
     var result = alpha + beta;
-    return result
+    return result;
 end
 
 func function_2(alpha, beta)
-    return alpha + beta
+    return alpha + beta;
 
 func function_2(alpha, beta)
-    print alpha + beta
+    print alpha + beta;
 ```
 
 #### Anonymous functions
@@ -127,9 +127,9 @@ When passing a function as argument to another function its possible to use a na
 ```
 ["green", "blue", "red"].each(
     function(value, index, array) do
-        print index + ": " + value
+        print index + ": " + value;
     end
-)
+);
 ```
 
 #### Lambda functions
@@ -137,8 +137,8 @@ Lambda functions are anonymous functions with a single shorthand return statemen
 
 ```
 var square = [0, 1, 2, 3].map(
-    lambda(num): num * num
-)
+    lambda(num) => num * num
+);
 ```
 
 The previous snippet is equivalent to
@@ -148,8 +148,14 @@ var square = [0, 1, 2, 3].map(
     function(num) do
         return num * num
     end
-)
+);
 ```
+
+### semicolons
+Semicolons are required after each
+- expression statements
+- var statement
+- print statement
 
 ### running the interpreter
 
