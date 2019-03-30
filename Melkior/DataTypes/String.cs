@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 
@@ -13,12 +14,66 @@ namespace Melkior
 
         public new Any Get(Any key)
         {
-            if (key.value.ToString() == "length")
+            if (key.IsNumber()) {
+                try
+                {
+                    return new String(
+                        (value as string)[Convert.ToInt32(key.value)].ToString()
+                    );
+                }
+                catch
+                {
+                    return new Any(null, DataType.Null);
+                }
+            }
+            switch (key.value)
             {
-                return new Number((value as string).Length);
+                case "length":
+                    return Length(this);
+                case "split":
+                    return  new Callable(
+                        (Interpreter inter, Any thiz, List<Any> args) => {
+                            return Split(this, args[0] as Array);
+                        }
+                    );
             }
             throw new MelkiorError(key + " does not exist in" + this);
         }
-    } 
+
+        public static Number Length(String str)
+        {
+            return new Number((str.value as string).Length);
+        }
+        /// <summary>
+        /// Splits a string into an array of multiple strings using an
+        /// a list of strings as separator
+        /// </summary>
+        /// <param name="str">The string to be split</param>
+        /// <param name="separators">An array of separator strings</param>
+        /// <returns>An array of splitted strings</returns>
+        public static Array Split(String str, Any separators)
+        {
+            string[] sep;
+            if (separators.IsArray())
+            {
+                sep = (separators.value as List<Any>)
+                    .ConvertAll(val => val.value as string)
+                    .ToArray();
+            }
+            else
+            {
+                var list = new List<string>();
+                list.Add(separators.ToString());
+                sep = list.ToArray();
+            }
+
+            var splitted = (str.value as string)
+                .Split(sep, StringSplitOptions.None)
+                .ToList()
+                .ConvertAll(val => new String(val) as Any);
+
+            return new Array(splitted);
+        }
+    }
 
 }

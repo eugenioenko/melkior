@@ -25,7 +25,6 @@ namespace Melkior
                 {
                     return new Any(null, DataType.Null);
                 }
-               
             }
             if (key.IsString())
             {
@@ -53,7 +52,9 @@ namespace Melkior
 
                 if (index >= length)
                 {
-                    (this.value as List<Any>).AddRange(Enumerable.Repeat(new Any(null, DataType.Null), index - length + 1));
+                    (this.value as List<Any>).AddRange(
+                        Enumerable.Repeat(new Any(null, DataType.Null), index - length + 1)
+                    );
                 }                
                  
                 (this.value as List<Any>)[index] = value;
@@ -65,7 +66,10 @@ namespace Melkior
 
         public new string ToString()
         {
-            return "<Array[" + (value as List<Any>).Count + "]>";
+            return "[" +
+                string.Join(", ", (value as List<Any>)
+                .Select(r => r.ToString()))
+             + "]";
         }
     }
 

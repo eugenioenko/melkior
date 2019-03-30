@@ -9,14 +9,23 @@ namespace Melkior
         public Scope scope;
         private List<Stmt> statements;
 
-        public Interpreter() { }
+        public Interpreter() {
+            global = new Scope();
+            scope = global;
+
+            global.Define("split", new Callable(
+                (Interpreter inter, Any thiz, List<Any> args) => {
+                    return String.Split(args[0] as String, args[1]);
+                })
+            );
+
+        }
 
         public Any Interpret(List<Stmt> statements)
         {
 
             this.statements = statements;
-            global = new Scope();
-            scope = global;
+            
             try
             {
                 foreach (var statement in statements)
@@ -278,6 +287,7 @@ namespace Melkior
         public Any VisitPrintStmt(Stmt.Print stmt)
         {
             var value = Evaluate(stmt.expression);
+            var str = new String("method");
             Console.WriteLine(value);
             return value;
         }
