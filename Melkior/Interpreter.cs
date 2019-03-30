@@ -405,6 +405,32 @@ namespace Melkior
                 return new Any(null, DataType.Null);
             }
 
+            if (iterable.IsString())
+            {
+
+                var index = new Number(0);
+                foreach (var item in iterable.value as string)
+                {
+                    Scope loopScope = new Scope(scope);
+                    loopScope.Define(name, new String(item.ToString()));
+                    if (key != null)
+                    {
+                        loopScope.Define(key, index);
+                    }
+                    if (stmt.loop is Stmt.Block)
+                    {
+                        ExecuteBlock((stmt.loop as Stmt.Block).statements, loopScope);
+                    }
+                    else
+                    {
+                        ExecuteStatement(stmt.loop, loopScope);
+                    }
+
+                    index.value = (double)index.value + 1;
+                }
+                return new Any(null, DataType.Null);
+            }
+
             if (iterable.IsDict())
             {
                 foreach (var item in iterable.value as Dictionary<Any, Any>)
