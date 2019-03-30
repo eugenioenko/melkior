@@ -13,6 +13,7 @@ namespace Melkior
             T VisitGetExpr(Get expr);
             T VisitGroupExpr(Group expr);
             T VisitKeyExpr(Key expr);
+            T VisitLambdaExpr(Lambda expr);
             T VisitLogicalExpr(Logical expr);
             T VisitArrayExpr(Array expr);
             T VisitLiteralExpr(Literal expr);
@@ -141,6 +142,21 @@ namespace Melkior
             public override T Accept<T>(IVisitor<T> visitor)
             {
                  return visitor.VisitKeyExpr(this);
+            }
+        }
+
+        public class Lambda: Expr
+        {
+            public Stmt lambda;
+
+            public Lambda(Stmt lambda)
+            {
+                this.lambda = lambda;
+            }
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                 return visitor.VisitLambdaExpr(this);
             }
         }
 

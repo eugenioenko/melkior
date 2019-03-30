@@ -37,7 +37,8 @@ namespace Melkior
                         return Runtime.ArrayLength(value as List<Any>);
                     case "each":
                         return Runtime.ArrayEach(value as List<Any>);
-
+                    case "map":
+                        return Runtime.ArrayMap(value as List<Any>);
                 }
             }
             throw new MelkiorError(key + " does not exist in" + this);

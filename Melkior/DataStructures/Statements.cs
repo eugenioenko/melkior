@@ -12,6 +12,7 @@ namespace Melkior
             T VisitFunctionStmt(Function stmt);
             T VisitIfStmt(If stmt);
             T VisitPrintStmt(Print stmt);
+            T VisitPauseStmt(Pause stmt);
             T VisitReturnStmt(Return stmt);
             T VisitVarStmt(Var stmt);
             T VisitWhileStmt(While stmt);
@@ -117,6 +118,19 @@ namespace Melkior
             public override T Accept<T>(IVisitor<T> visitor)
             {
                  return visitor.VisitPrintStmt(this);
+            }
+        }
+
+        public class Pause: Stmt
+        {
+
+            public Pause()
+            {
+            }
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                 return visitor.VisitPauseStmt(this);
             }
         }
 

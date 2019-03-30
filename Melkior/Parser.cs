@@ -187,6 +187,10 @@ namespace Melkior
             {
                 return ReturnStatement();
             }
+            if (Match(TokenType.Pause))
+            {
+                return PauseStatement();
+            }
            
             return ExpressionStatement();
         }
@@ -194,8 +198,12 @@ namespace Melkior
         private Stmt PrintStatement()
         {
             var value = Expression();
-            // Consume(TokenType.Semicolon, "Expected semicolon after print expression");
             return new Stmt.Print(value);
+        }
+
+        private Stmt PauseStatement()
+        {
+            return new Stmt.Pause();
         }
 
         private Stmt BlockStatement()
@@ -545,6 +553,10 @@ namespace Melkior
             {
                 return DoGroup();
             }
+            if (Match(TokenType.Func, TokenType.Lambda))
+            {
+                return DoLambda();
+            }
 
             Error(Peek(), "Unexpected character");
             return null;
@@ -602,6 +614,24 @@ namespace Melkior
             var expr = Expression();
             Consume(TokenType.RightParen, "Expected closing ')' after grouping expression");
             return expr;
+        }
+
+        private Expr DoLambda()
+        {
+            Token lambda = Previous();
+            List<Token> parameters = FuncParameters();
+            Stmt body = null;
+            if (lambda.type == TokenType.Func)
+            {
+                body = Statement();
+            }
+            else
+            {
+                Consume(TokenType.Colon, "Expected colon ':' after lambda parameters");
+                body = new Stmt.Return(Expression());
+            }
+            var function = new Stmt.Function(lambda, parameters, body);
+            return new Expr.Lambda(function);
         }
 
     }
