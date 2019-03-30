@@ -135,7 +135,7 @@ namespace Melkior
             {
                 initializer = Expression();
             }
-            // Consume(TokenType.Semicolon, "Expected semicolon after a variable initialization");
+            Consume(TokenType.Semicolon, "Expected semicolon after a variable initialization");
             var writable = varType == TokenType.Var ? true : false;
             return new Stmt.Var(name, null, initializer, writable);
         }
@@ -210,6 +210,7 @@ namespace Melkior
         private Stmt PrintStatement()
         {
             var value = Expression();
+            Consume(TokenType.Semicolon, "Expected a semicolon after print statement");
             return new Stmt.Print(value);
         }
 
@@ -291,7 +292,7 @@ namespace Melkior
             {
                 value = Expression();
             }
-
+            Consume(TokenType.Semicolon, "Expected a semicolon after return statement");
             return new Stmt.Return(value);
         }
 
@@ -317,7 +318,7 @@ namespace Melkior
         private Stmt ExpressionStatement()
         {
             var expression = Expression();
-            // Consume(TokenType.Semicolon, "Expected a semicolon after an expression");
+            Consume(TokenType.Semicolon, "Expected a semicolon after an expression");
             return new Stmt.Expression(expression);
         }
 

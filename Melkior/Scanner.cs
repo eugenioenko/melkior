@@ -198,6 +198,7 @@ namespace Melkior
                 case '}': AddToken(TokenType.RightBrace, null); break;
                 case ',': AddToken(TokenType.Comma, null); break;
                 case ':': AddToken(TokenType.Colon, null); break;
+                case ';': AddToken(TokenType.Semicolon, null); break;
                 case '.': AddToken(TokenType.Dot, null); break;
                 case '*': AddToken(Match('=') ? TokenType.StarEqual : TokenType.Star, null); break;
                 case '%': AddToken(Match('=') ? TokenType.PercentEqual : TokenType.Percent, null); break;
