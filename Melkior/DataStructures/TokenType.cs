@@ -63,6 +63,7 @@ namespace Melkior
         Var,
         End,
         Foreach,
+        Pause,
         Print,
         Typeof,
         Lambda,

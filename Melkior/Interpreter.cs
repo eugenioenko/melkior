@@ -368,17 +368,17 @@ namespace Melkior
             if (iterable.IsArray())
             {
 
-                int index = 0;
+                var index = new Number(0);
                 foreach (var item in iterable.value as List<Any>)
                 {
                     Scope loopScope = new Scope(scope);
                     loopScope.Define(name, item);
                     if (key != null)
                     {
-                        loopScope.Define(key, new Number(index));
+                        loopScope.Define(key, index);
                     }
                     ExecuteFuncClosure(stmt.loop, loopScope);
-                    index += 1;
+                    index.value = (double) index.value + 1;
                 }
                 return new Any(null, DataType.Null);
             }
@@ -401,6 +401,18 @@ namespace Melkior
             Error(stmt.iterable + " is not an iterable collection");
             return null;
 
+        }
+
+        public Any VisitLambdaExpr(Expr.Lambda expr)
+        {
+            return new Function(expr.lambda as Stmt.Function, scope);
+        }
+
+        public Any VisitPauseStmt(Stmt.Pause stmt)
+        {
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+            return null;
         }
     }
 }
