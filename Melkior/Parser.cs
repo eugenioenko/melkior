@@ -8,7 +8,9 @@ namespace Melkior
         private int current;
         private List<Token> tokens;
 
-        public Parser() { }
+        public Parser() {
+            current = 0;
+        }
 
         public List<Stmt> Parse(List<Token> tokens)
         {

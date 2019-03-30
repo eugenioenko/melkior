@@ -9,7 +9,10 @@ namespace Melkior
         public Scope scope;
         private List<Stmt> statements;
 
-        public Interpreter() { }
+        public Interpreter() {
+            global = new Scope();
+            scope = global;
+        }
 
         public Any Interpret(List<Stmt> statements)
         {

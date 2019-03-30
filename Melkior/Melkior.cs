@@ -33,7 +33,7 @@ namespace Melkior
 
         static void HelpAndVersion()
         {
-            Console.WriteLine("Melkior interpreter version 0.7");
+            Console.WriteLine("Melkior interpreter version 0.8");
             Console.WriteLine("usage: melkior [source] [arguments]");
             Console.WriteLine("");
             Console.WriteLine("source: the filename of the sourcecode to be executed");

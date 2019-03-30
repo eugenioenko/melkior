@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Melkior
@@ -11,7 +11,9 @@ namespace Melkior
         private int line;
         private int start;
 
-        public Scanner() {}
+        public Scanner() {
+            Init("");
+        }
 
         private void Init(string source)
         {
