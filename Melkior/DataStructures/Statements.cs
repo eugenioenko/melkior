@@ -191,10 +191,10 @@ namespace Melkior
         {
             public Token item;
             public Token key;
-            public Token iterable;
+            public Expr iterable;
             public Stmt loop;
 
-            public Foreach(Token item, Token key, Token iterable, Stmt loop)
+            public Foreach(Token item, Token key, Expr iterable, Stmt loop)
             {
                 this.item = item;
                 this.key = key;

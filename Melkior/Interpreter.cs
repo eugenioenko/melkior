@@ -377,7 +377,7 @@ namespace Melkior
         {
             string name = stmt.item.lexeme;
             string key = stmt.key == null ? null : stmt.key.lexeme;
-            var iterable = scope.Get(stmt.iterable.lexeme);
+            var iterable = Evaluate(stmt.iterable);
 
             if (iterable.IsArray())
             {
