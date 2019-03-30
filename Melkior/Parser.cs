@@ -93,6 +93,15 @@ namespace Melkior
             return null;
         }
 
+        private Token Discard(TokenType type, string message)
+        {
+            if (Check(type))
+            {
+                Error(Previous(), message);
+            }
+            return Peek();
+        }
+
         private void Error(Token token, string message)
         {
             Console.WriteLine("[Parse Error] => " + token +  ": " + message);
@@ -135,8 +144,9 @@ namespace Melkior
         {
             Token name = Consume(TokenType.Identifier, "Expected a function name after func keyword");
             List<Token> parameters = FuncParameters();
-            Stmt body = Statement();
-
+            Discard(TokenType.Do, "Unexpected 'do' at the start of function body");
+            List<Stmt> body = Block(TokenType.End);
+            Consume(TokenType.End, "Expected 'end' at the end of a function");
             return new Stmt.Function(name, parameters, body);
         }
 
@@ -219,6 +229,7 @@ namespace Melkior
         { 
             Expr condition = Expression();
             Consume(TokenType.Then, "Expected 'then' after if condition");
+            Discard(TokenType.Do, "Unexpected 'do' after 'then'");
             Stmt thenStmt = new Stmt.Block(Block(TokenType.End, TokenType.Else, TokenType.Elseif));
 
             if (Match(TokenType.End))
@@ -622,15 +633,17 @@ namespace Melkior
         {
             Token lambda = Previous();
             List<Token> parameters = FuncParameters();
-            Stmt body = null;
+            List<Stmt> body = new List<Stmt>();
             if (lambda.type == TokenType.Func)
             {
-                body = Statement();
+                Discard(TokenType.Do, "Unexpected 'do' at the start of function body");
+                body = Block(TokenType.End);
+                Consume(TokenType.End, "Expected 'end' after anonymous function body");
             }
             else
             {
-                Consume(TokenType.Colon, "Expected colon ':' after lambda parameters");
-                body = new Stmt.Return(Expression());
+                Consume(TokenType.Arrow, "Expected arrow '=>' after lambda parameters");
+                body.Add(new Stmt.Return(Expression()));
             }
             var function = new Stmt.Function(lambda, parameters, body);
             return new Expr.Lambda(function);

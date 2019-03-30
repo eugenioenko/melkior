@@ -19,6 +19,7 @@ namespace Melkior
         Dot,
 
         // one or two character tokens
+        Arrow,
         Bang,
         BangEqual,
         Colon,

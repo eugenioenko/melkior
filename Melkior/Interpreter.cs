@@ -9,10 +9,7 @@ namespace Melkior
         public Scope scope;
         private List<Stmt> statements;
 
-        public Interpreter() {
-            global = new Scope();
-            scope = global;
-        }
+        public Interpreter() { }
 
         public Any Interpret(List<Stmt> statements)
         {
@@ -219,14 +216,26 @@ namespace Melkior
             return null;
         }
 
-        public Any ExecuteFuncClosure(Stmt statement, Scope nextScope)
+        private Any ExecuteStatement(Stmt statement, Scope nextScope)
+        {
+            var restoreScope = scope;
+            scope = nextScope;
+            Execute(statement);
+            scope = restoreScope;
+            return null;
+        }
+
+        public Any ExecuteFunction(List<Stmt> block, Scope nextScope)
         {
             Scope restoreScope = scope;
-            Any result = null;
+            Any result = new Any(null, DataType.Null);
             try
             {
                 scope = nextScope;
-                result = Execute(statement);
+                foreach (var statement in block)
+                {
+                    Execute(statement);
+                }
             }
             catch (MelkiorReturn e)
             {
@@ -238,6 +247,8 @@ namespace Melkior
             }
             return result;
         }
+
+
 
         public Any VisitExpressionStmt(Stmt.Expression stmt)
         {
@@ -380,7 +391,15 @@ namespace Melkior
                     {
                         loopScope.Define(key, index);
                     }
-                    ExecuteFuncClosure(stmt.loop, loopScope);
+                    if (stmt.loop is Stmt.Block)
+                    {
+                        ExecuteBlock((stmt.loop as Stmt.Block).statements, loopScope);
+                    }
+                    else
+                    {
+                        ExecuteStatement(stmt.loop, loopScope);
+                    }
+                    
                     index.value = (double) index.value + 1;
                 }
                 return new Any(null, DataType.Null);
@@ -396,7 +415,14 @@ namespace Melkior
                     {
                         loopScope.Define(key, item.Key);
                     }
-                    ExecuteFuncClosure(stmt.loop, loopScope);
+                    if (stmt.loop is Stmt.Block)
+                    {
+                        ExecuteBlock((stmt.loop as Stmt.Block).statements, loopScope);
+                    }
+                    else
+                    {
+                        ExecuteStatement(stmt.loop, loopScope);
+                    }
                 }
                 return new Any(null, DataType.Null);
             }

@@ -11,9 +11,7 @@ namespace Melkior
         private int line;
         private int start;
 
-        public Scanner() {
-            Init("");
-        }
+        public Scanner() { }
 
         private void Init(string source)
         {
@@ -206,7 +204,7 @@ namespace Melkior
                 case '<': AddToken(Match('=') ? TokenType.LessEqual : TokenType.Less, null); break;
                 case '>': AddToken(Match('=') ? TokenType.GreaterEqual : TokenType.Greater, null); break;
                 case '!': AddToken(Match('=') ? TokenType.BangEqual : TokenType.Bang, null); break;
-                case '=': AddToken(Match('=') ? TokenType.EqualEqual : TokenType.Equal, null); break;
+                case '=': AddToken(Match('=') ? TokenType.EqualEqual : Match('>') ? TokenType.Arrow : TokenType.Equal, null); break;
                 case '-': AddToken(Match('-') ? TokenType.MinusMinus : Match('=') ? TokenType.MinusEqual : TokenType.Minus, null); break;
                 case '+': AddToken(Match('+') ? TokenType.PlusPlus : Match('=') ? TokenType.PlusEqual : TokenType.Plus, null); break;
                 case '/':
