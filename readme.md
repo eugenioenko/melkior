@@ -106,27 +106,19 @@ end
 
 
  ### functions
- In melkior the body of the function must be a statement.
- But it does not have to be a block statement.
-
+ In melkior the body of the function is a block statement which must finish with "end"
 ```
-func function_1(alpha, beta) do
+func function_1(alpha, beta)
     var result = alpha + beta;
     return result;
 end
-
-func function_2(alpha, beta)
-    return alpha + beta;
-
-func function_2(alpha, beta)
-    print alpha + beta;
 ```
 
 #### Anonymous functions
 When passing a function as argument to another function its possible to use a nameless function
 ```
 ["green", "blue", "red"].each(
-    function(value, index, array) do
+    func(value, index, array) do
         print index + ": " + value;
     end
 );
