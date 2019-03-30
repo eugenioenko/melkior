@@ -133,13 +133,14 @@ When passing a function as argument to another function its possible to use a na
 ```
 
 #### Lambda functions
-Lambda functions are single anonymous functions with a single return statement in their body
+Lambda functions are anonymous functions with a single shorthand return statement in their body
 
 ```
 var square = [0, 1, 2, 3].map(
     lambda(num): num * num
 )
 ```
+
 The previous snippet is equivalent to
 
 ```
