@@ -37,7 +37,7 @@ namespace generator
                 // { "Class", new string[]{"Token name", "Token parent", "List<Function> methods"}},
                 { "DoWhile", new string[]{"Stmt loop", "Expr condition"}},
                 { "Expression", new string[]{"Expr expression"}},
-                { "Function", new string[]{"Token name", "List<Token> prms", "Stmt body"}},
+                { "Function", new string[]{"Token name", "List<Token> prms", "List<Stmt> body"}},
                 { "If", new string[]{"Expr condition", "Stmt thenStmt", "Stmt elseStmt"}},
                 { "Print", new string[]{"Expr expression"}},
                 { "Pause", new string[]{}},

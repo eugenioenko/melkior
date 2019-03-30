@@ -41,7 +41,7 @@ namespace Melkior
                     funcScope.Define(declaration.prms[i].lexeme, args[i]);
                 }
 
-                return inter.ExecuteFuncClosure(declaration.body, funcScope);
+                return inter.ExecuteFunction(declaration.body, funcScope);
             };
         }
 

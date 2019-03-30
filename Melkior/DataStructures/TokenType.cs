@@ -17,8 +17,10 @@ namespace Melkior
         Star,
         Comma,
         Dot,
+        Semicolon,
 
         // one or two character tokens
+        Arrow,
         Bang,
         BangEqual,
         Colon,

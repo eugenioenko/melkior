@@ -20,15 +20,15 @@ namespace Melkior
         {
             return new Callable(
                 (Interpreter inter, Any thiz, List<Any> args) => {
-                    var index =  new Number(0);
+                    int index = 0;
                     foreach (var item in values)
                     {
                         (args[0] as Callable).Call(
                             inter, thiz, new List<Any>() {
-                                item, index, new Any(values, DataType.Array)
+                                item, new Number(index), new Any(values, DataType.Array)
                             }
                         );
-                        index.value = (double) index.value + 1;
+                        index += 1;
                     }
                     return null;
                 }
@@ -39,7 +39,7 @@ namespace Melkior
         {
             return new Callable(
                 (Interpreter inter, Any thiz, List<Any> args) => {
-                    var index = new Number(0);
+                    int index = 0;
                     var mapped = new List<Any>();
 
                     foreach (var item in values)
@@ -47,11 +47,11 @@ namespace Melkior
                         mapped.Add(
                             (args[0] as Callable).Call(
                                 inter, thiz, new List<Any>() {
-                                    item, index, new Any(values, DataType.Array)
+                                    item, new Number(index), new Any(values, DataType.Array)
                                 }
                             )
                         );
-                        index.value = (double)index.value + 1;
+                        index += 1;
                     }
                     return new Array(mapped);
                 }

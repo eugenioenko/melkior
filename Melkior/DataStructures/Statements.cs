@@ -72,9 +72,9 @@ namespace Melkior
         {
             public Token name;
             public List<Token> prms;
-            public Stmt body;
+            public List<Stmt> body;
 
-            public Function(Token name, List<Token> prms, Stmt body)
+            public Function(Token name, List<Token> prms, List<Stmt> body)
             {
                 this.name = name;
                 this.prms = prms;
