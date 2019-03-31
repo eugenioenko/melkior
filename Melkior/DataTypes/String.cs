@@ -10,6 +10,7 @@ namespace Melkior
     {
         public String(string value) : base(value, DataType.String) {
             this.value = value;
+           
         }
 
         public new Any Get(Any key)
@@ -31,11 +32,7 @@ namespace Melkior
                 case "length":
                     return Length(this);
                 case "split":
-                    return  new Callable(
-                        (Interpreter inter, Any self, List<Any> args) => {
-                            return Split(this, args[0] as Any);
-                        }
-                    );
+                    return Runtime.StringSplit;
             }
             throw new MelkiorError(key + " does not exist in" + this);
         }
@@ -44,14 +41,15 @@ namespace Melkior
         {
             return new Number((str.value as string).Length);
         }
+
         /// <summary>
         /// Splits a string into an array of multiple strings using an
         /// a list of strings as separator
         /// </summary>
-        /// <param name="str">The string to be split</param>
+        /// <param name="self">The string to be split</param>
         /// <param name="separators">An array of separator strings</param>
         /// <returns>An array of splitted strings</returns>
-        public static Array Split(String str, Any separators)
+        public static Array Split(String self, Any separators)
         {
             string[] sep;
             if (separators.IsArray())
@@ -67,13 +65,14 @@ namespace Melkior
                 sep = list.ToArray();
             }
 
-            var splitted = (str.value as string)
+            var splitted = (self.value as string)
                 .Split(sep, StringSplitOptions.None)
                 .ToList()
                 .ConvertAll(val => new String(val) as Any);
 
             return new Array(splitted);
         }
+
     }
 
 }

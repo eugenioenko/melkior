@@ -5,8 +5,29 @@ using System.Text;
 
 namespace Melkior
 {
-    class Runtime
+    
+    sealed class Runtime
     {
+        /*
+        private static readonly Lazy<Runtime> lazy = new Lazy<Runtime>(() => new Runtime());
+
+        public static Runtime Instance {
+            get
+            {
+                return lazy.Value;
+            }
+        }
+
+        private Runtime() { }
+        */
+
+        public static Callable StringSplit = new Callable(
+            (Interpreter inter, Any self, List<Any> args) =>
+            {
+                return String.Split(self as String, args[0] as Any);
+            }
+        );
+        
         public static Callable ArrayLength(List<Any> values)
         {
             return new Callable(

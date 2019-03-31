@@ -14,7 +14,7 @@ namespace Melkior
             scope = global;
 
             global.Define("split", new Callable(
-                (Interpreter inter, Any thiz, List<Any> args) => {
+                (Interpreter inter, Any self, List<Any> args) => {
                     return String.Split(args[0] as String, args[1]);
                 })
             );
@@ -121,8 +121,14 @@ namespace Melkior
                 Error("Runtime Error" + callee + " is not a function");
             }
 
+            Any self = null;
+            if (expr.callee is Expr.Get)
+            {
+                self = Evaluate((expr.callee as Expr.Get).entity);
+            }
+
             // todo add aritiy check
-            return (callee as Callable).Call(this, callee, args);
+            return (callee as Callable).Call(this, self, args);
         }
 
         public Any VisitGroupingExpr(Expr.Group expr)
