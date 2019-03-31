@@ -5,7 +5,7 @@ using System.Text;
 namespace Melkior
 {
 
-    delegate Any FunctionCall(Interpreter inter, Any thiz, List<Any> args);
+    delegate Any FunctionCall(Interpreter inter, Any self, List<Any> args);
 
     class Callable : Any
     {
@@ -13,13 +13,17 @@ namespace Melkior
 
         public Callable() : base(null, DataType.Function)
         {
-     
+
         }
 
         public Callable(FunctionCall call): this ()
         {
             Call = call;
             value = call;
+        }
+
+        public override string ToString() {
+            return "<internal function>";
         }
     }
 
@@ -32,8 +36,8 @@ namespace Melkior
         {
             this.declaration = declaration;
             this.closure = closure;
-           
-            Call = (Interpreter inter, Any thiz, List<Any> args) =>
+
+            Call = (Interpreter inter, Any self, List<Any> args) =>
             {
                 Scope funcScope = new Scope(closure);
                 for (var i = 0; i < declaration.prms.Count; ++i)

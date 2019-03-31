@@ -36,6 +36,11 @@ namespace Melkior
             throw new MelkiorError(key + " does not exist in" + this);
         }
 
+        public bool IsNull()
+        {
+            return type == DataType.Null;
+        }
+
         public bool IsArray()
         {
             return type == DataType.Array;

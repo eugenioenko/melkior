@@ -545,7 +545,7 @@ namespace Melkior
             }
             if (Match(TokenType.Number))
             {
-                return new Expr.Literal(Double.Parse(Previous().literal.ToString()), DataType.Number);
+                return new Expr.Literal(double.Parse(Previous().literal.ToString()), DataType.Number);
             }
             if (Match(TokenType.String))
             {
