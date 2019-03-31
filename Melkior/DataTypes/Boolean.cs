@@ -9,10 +9,13 @@ namespace Melkior
 
         public Boolean(object value, DataType type) : base(value, type)
         {
-
+            
         }
 
-
+        public override string ToString()
+        {
+            return value.Equals(true) ? "true" : "false"; 
+        }
     }
 
 }

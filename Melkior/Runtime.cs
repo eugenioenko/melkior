@@ -9,9 +9,13 @@ namespace Melkior
     sealed class Runtime
     {
    
-        public static Dictionary<Any, Callable> StringMethods = new Dictionary<Any, Callable>()
+        public static Dictionary<Any, Any> StringMethods = new Dictionary<Any, Any>()
         {
+            { new String("concat"), Strings.Concat },
+            { new String("contains"), Strings.Contains },
+            { new String("includes"), Strings.Contains },
             { new String("split"), Strings.Split }
+            
         };
 
         public static Dictionary<Any, Callable> ArrayMethods = new Dictionary<Any, Callable>()
@@ -22,13 +26,28 @@ namespace Melkior
 
         public static class Strings
         {
+            public static Callable Concat = new Callable(
+               (Interpreter inter, Any self, List<Any> args) =>
+               {
+                   return String.Concat(self as String, args[0]);
+               }
+           );
+
+            public static Callable Contains = new Callable(
+               (Interpreter inter, Any self, List<Any> args) =>
+               {
+                   return String.Contains(self as String, args[0]);
+               }
+           );
+
             public static Callable Split = new Callable(
-                (Interpreter inter, Any self, List<Any> args) =>
-                {
-                    return String.Split(self as String, args[0] as Any);
-                }
-            );
+               (Interpreter inter, Any self, List<Any> args) =>
+               {
+                   return String.Split(self as String, args[0]);
+               }
+           );
         }
+
 
         public static class Arrays
         {

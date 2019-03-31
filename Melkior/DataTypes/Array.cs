@@ -63,7 +63,16 @@ namespace Melkior
             throw new MelkiorError(key + " is not a valid index for array " + this);
         }
 
-        public new string ToString()
+        public static String Join(Array array, String separator)
+        {
+            return new String(
+                string
+                    .Join(separator.value as string, (array.value as List<Any>)
+                    .Select(r => r.ToString()))
+            );
+        }
+
+        public override string ToString()
         {
             return "[" +
                 string.Join(", ", (value as List<Any>)

@@ -56,6 +56,11 @@ namespace Melkior
             return type == DataType.String;
         }
 
+        public bool IsBoolean()
+        {
+            return type == DataType.Boolean;
+        }
+
         public bool IsDict()
         {
             return type == DataType.Dict;
@@ -82,33 +87,33 @@ namespace Melkior
             {
                 return new Number((double)left.value + (double)right.value);
             }
-            return new String(left.value.ToString() + right.value.ToString());
+            return new String(left.ToString() + right.ToString());
         }
 
 
         public static Any operator -(Any left, Any right)
         {
-            return new Number(Double.NaN);
+            return new Number(double.NaN);
         }
 
         public static Any operator /(Any left, Any right)
         {
-            return new Number(Double.NaN);
+            return new Number(double.NaN);
         }
 
         public static Any operator *(Any left, Any right)
         {
-            return new Number(Double.NaN);
+            return new Number(double.NaN);
         }
 
         public static Any operator %(Any left, Any right)
         {
-            return new Number(Double.NaN);
+            return new Number(double.NaN);
         }
 
         public static Any operator |(Any left, Any right)
         {
-            return new Number(Double.NaN);
+            return new Number(double.NaN);
         }
 
         public static Any operator ^(Any left, Any right)
@@ -118,22 +123,22 @@ namespace Melkior
 
         public static Any operator >(Any left, Any right)
         {
-            return new Number(Double.NaN);
+            return new Number(double.NaN);
         }
 
         public static Any operator >=(Any left, Any right)
         {
-            return new Number(Double.NaN);
+            return new Number(double.NaN);
         }
 
         public static Any operator <(Any left, Any right)
         {
-            return new Number(Double.NaN);
+            return new Number(double.NaN);
         }
 
         public static Any operator <=(Any left, Any right)
         {
-            return new Number(Double.NaN);
+            return new Number(double.NaN);
         }
 
         public static Any operator ==(Any left, Any right)
@@ -192,6 +197,7 @@ namespace Melkior
         public override string ToString()
         {
             if (value == null) return "null";
+            if (IsBoolean()) return (this as Boolean).ToString();
             if (IsArray()) return (this as Array).ToString();
             return value.ToString();
         }

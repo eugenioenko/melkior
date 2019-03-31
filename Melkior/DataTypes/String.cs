@@ -34,11 +34,11 @@ namespace Melkior
                 {
                     return Length(this);
                 }
+            }
 
-                if (Runtime.StringMethods.ContainsKey(key))
-                {
-                    return Runtime.StringMethods[key];
-                }
+            if (Runtime.StringMethods.ContainsKey(key))
+            {
+                return Runtime.StringMethods[key];
             }
 
             throw new MelkiorError(key + " does not exist in" + this);
@@ -78,6 +78,30 @@ namespace Melkior
                 .ConvertAll(val => new String(val) as Any);
 
             return new Array(splitted);
+        }
+
+        /// <summary>
+        /// Concatenates two strings together and returns a new string
+        /// </summary>
+        /// <param name="self">String to concatenate</param>
+        /// <param name="other">String or an Array of strings to concatanate</param>
+        /// <returns>Concatanated string</returns>
+        public static String Concat(String self, Any other)
+        {
+            if (other.IsString())
+            {
+                return new String(string.Concat(self.value, other.value));
+            }
+            if (other.IsArray())
+            {
+                return new String(string.Concat(self.value, Array.Join(other as Array, new String(""))));
+            }
+            return new String(string.Concat(self.value, other.ToString()));
+        }
+
+        public static Boolean Contains(String self, Any other)
+        {
+            return new Boolean((self.value as string).Contains(other.ToString()));
         }
 
     }
