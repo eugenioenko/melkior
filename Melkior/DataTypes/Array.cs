@@ -28,16 +28,14 @@ namespace Melkior
             }
             if (key.IsString())
             {
-                switch (key.value)
+                if (key.value as string == "length")
                 {
-                    case "length":
-                        return new Number((value as List<Any>).Count);
-                    case "size":
-                        return Runtime.ArrayLength(value as List<Any>);
-                    case "each":
-                        return Runtime.ArrayEach(value as List<Any>);
-                    case "map":
-                        return Runtime.ArrayMap(value as List<Any>);
+                    return new Number((value as List<Any>).Count);
+                }
+
+                if (Runtime.ArrayMethods.ContainsKey(key.value as string))
+                {
+                    return Runtime.ArrayMethods[key.value as string];
                 }
             }
             throw new MelkiorError(key + " does not exist in" + this);
@@ -61,6 +59,7 @@ namespace Melkior
                 return;
              
             }
+
             throw new MelkiorError(key + " is not a valid index for array " + this);
         }
 

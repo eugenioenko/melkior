@@ -8,45 +8,40 @@ namespace Melkior
     
     sealed class Runtime
     {
-        /*
-        private static readonly Lazy<Runtime> lazy = new Lazy<Runtime>(() => new Runtime());
-
-        public static Runtime Instance {
-            get
-            {
-                return lazy.Value;
-            }
-        }
-
-        private Runtime() { }
-        */
-
-        public static Callable StringSplit = new Callable(
-            (Interpreter inter, Any self, List<Any> args) =>
-            {
-                return String.Split(self as String, args[0] as Any);
-            }
-        );
-        
-        public static Callable ArrayLength(List<Any> values)
+   
+        public static Dictionary<string, Callable> StringMethods = new Dictionary<string, Callable>()
         {
-            return new Callable(
-                (Interpreter inter, Any thiz, List<Any> args) => {
-                    return new Number(values.Count);
+            { "split", Strings.Split }
+        };
+
+        public static Dictionary<string, Callable> ArrayMethods = new Dictionary<string, Callable>()
+        {
+            { "each", Arrays.Each },
+            { "map", Arrays.Map }
+        };
+
+        public static class Strings
+        {
+            public static Callable Split = new Callable(
+                (Interpreter inter, Any self, List<Any> args) =>
+                {
+                    return String.Split(self as String, args[0] as Any);
                 }
             );
         }
 
-        public static Callable ArrayEach(List<Any> values)
+        public static class Arrays
         {
-            return new Callable(
-                (Interpreter inter, Any thiz, List<Any> args) => {
+            public static Callable Each =  new Callable(
+                (Interpreter inter, Any self, List<Any> args) =>
+                {
                     int index = 0;
-                    foreach (var item in values)
+                    foreach (var item in self.value as List<Any>)
                     {
                         (args[0] as Callable).Call(
-                            inter, thiz, new List<Any>() {
-                                item, new Number(index), new Any(values, DataType.Array)
+                            inter, self, new List<Any>()
+                            {
+                                item, new Number(index), self
                             }
                         );
                         index += 1;
@@ -54,21 +49,20 @@ namespace Melkior
                     return null;
                 }
             );
-        }
 
-        public static Callable ArrayMap(List<Any> values)
-        {
-            return new Callable(
-                (Interpreter inter, Any thiz, List<Any> args) => {
+            public static Callable Map =  new Callable(
+                (Interpreter inter, Any self, List<Any> args) =>
+                {
                     int index = 0;
                     var mapped = new List<Any>();
 
-                    foreach (var item in values)
+                    foreach (var item in self.value as List<Any>)
                     {
                         mapped.Add(
                             (args[0] as Callable).Call(
-                                inter, thiz, new List<Any>() {
-                                    item, new Number(index), new Any(values, DataType.Array)
+                                inter, self, new List<Any>()
+                                {
+                                    item, new Number(index), self
                                 }
                             )
                         );

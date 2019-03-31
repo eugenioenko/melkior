@@ -27,13 +27,20 @@ namespace Melkior
                     return new Any(null, DataType.Null);
                 }
             }
-            switch (key.value)
+
+            if (key.IsString())
             {
-                case "length":
+                if (key.value as string == "length")
+                {
                     return Length(this);
-                case "split":
-                    return Runtime.StringSplit;
+                }
+
+                if (Runtime.StringMethods.ContainsKey(key.value as string))
+                {
+                    return Runtime.StringMethods[key.value as string];
+                }
             }
+
             throw new MelkiorError(key + " does not exist in" + this);
         }
 
