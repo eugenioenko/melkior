@@ -99,9 +99,20 @@ namespace Melkior
             return new String(string.Concat(self.value, other.ToString()));
         }
 
+        /// <summary>
+        ///  Determines whether one string can be found in another
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="other"></param>
+        /// <returns>boolean true or false</returns>
         public static Boolean Contains(String self, Any other)
         {
             return new Boolean((self.value as string).Contains(other.ToString()));
+        }
+
+        public static Boolean EndsWith(String self, Any other)
+        {
+            return new Boolean((self.value as string).EndsWith(other.ToString()));
         }
 
     }
