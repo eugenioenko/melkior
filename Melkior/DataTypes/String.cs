@@ -32,8 +32,8 @@ namespace Melkior
                     return Length(this);
                 case "split":
                     return  new Callable(
-                        (Interpreter inter, Any thiz, List<Any> args) => {
-                            return Split(this, args[0] as Array);
+                        (Interpreter inter, Any self, List<Any> args) => {
+                            return Split(this, args[0] as Any);
                         }
                     );
             }
