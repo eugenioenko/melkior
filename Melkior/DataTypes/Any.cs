@@ -166,10 +166,10 @@ namespace Melkior
 
         public static Any operator !(Any left)
         {
-            return new Boolean(!left.ToBoolean());
+            return new Boolean(!left.IsTruthy());
         }
 
-        public bool ToBoolean()
+        public bool IsTruthy()
         {
             if (type == DataType.Null)
             {

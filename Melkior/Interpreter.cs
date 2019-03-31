@@ -142,14 +142,14 @@ namespace Melkior
 
             if (expr.oprtr.type == TokenType.Or)
             {
-                if (left.ToBoolean())
+                if (left.IsTruthy())
                 {
                     return left;
                 }
             }
             if (expr.oprtr.type == TokenType.And)
             {
-                if (!left.ToBoolean())
+                if (!left.IsTruthy())
                 {
                     return left;
                 }
@@ -183,7 +183,7 @@ namespace Melkior
 
         public Any VisitTernaryExpr(Expr.Ternary expr)
         {
-            return Evaluate(expr.condition).ToBoolean() ? Evaluate(expr.thenExpr) : Evaluate(expr.elseExpr);
+            return Evaluate(expr.condition).IsTruthy() ? Evaluate(expr.thenExpr) : Evaluate(expr.elseExpr);
         }
 
         public Any VisitUnaryExpr(Expr.Unary expr)
@@ -197,7 +197,7 @@ namespace Melkior
                 case TokenType.Typeof:
                     return new String(right.type.ToString());
                 case TokenType.Not:
-                    return new Boolean(!right.ToBoolean());
+                    return new Boolean(!right.IsTruthy());
                 default:
                     throw new NotImplementedException();
             }
@@ -279,7 +279,7 @@ namespace Melkior
 
         public Any VisitIfStmt(Stmt.If stmt)
         {
-            if (Evaluate(stmt.condition).ToBoolean())
+            if (Evaluate(stmt.condition).IsTruthy())
             {
                 return Execute(stmt.thenStmt);
             }
@@ -314,7 +314,7 @@ namespace Melkior
 
         public Any VisitWhileStmt(Stmt.While stmt)
         {
-            while (Evaluate(stmt.condition).ToBoolean())
+            while (Evaluate(stmt.condition).IsTruthy())
             {
                 Execute(stmt.loop);
             }
@@ -326,7 +326,7 @@ namespace Melkior
             do
             {
                 Execute(stmt.loop);
-            } while (Evaluate(stmt.condition).ToBoolean());
+            } while (Evaluate(stmt.condition).IsTruthy());
             return null;
         }
 
