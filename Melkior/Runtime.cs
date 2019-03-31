@@ -9,15 +9,15 @@ namespace Melkior
     sealed class Runtime
     {
    
-        public static Dictionary<string, Callable> StringMethods = new Dictionary<string, Callable>()
+        public static Dictionary<Any, Callable> StringMethods = new Dictionary<Any, Callable>()
         {
-            { "split", Strings.Split }
+            { new String("split"), Strings.Split }
         };
 
-        public static Dictionary<string, Callable> ArrayMethods = new Dictionary<string, Callable>()
+        public static Dictionary<Any, Callable> ArrayMethods = new Dictionary<Any, Callable>()
         {
-            { "each", Arrays.Each },
-            { "map", Arrays.Map }
+            { new String("each"), Arrays.Each },
+            { new String("map"), Arrays.Map }
         };
 
         public static class Strings

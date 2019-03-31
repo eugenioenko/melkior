@@ -33,9 +33,9 @@ namespace Melkior
                     return new Number((value as List<Any>).Count);
                 }
 
-                if (Runtime.ArrayMethods.ContainsKey(key.value as string))
+                if (Runtime.ArrayMethods.ContainsKey(key))
                 {
-                    return Runtime.ArrayMethods[key.value as string];
+                    return Runtime.ArrayMethods[key];
                 }
             }
             throw new MelkiorError(key + " does not exist in" + this);

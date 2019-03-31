@@ -35,9 +35,9 @@ namespace Melkior
                     return Length(this);
                 }
 
-                if (Runtime.StringMethods.ContainsKey(key.value as string))
+                if (Runtime.StringMethods.ContainsKey(key))
                 {
-                    return Runtime.StringMethods[key.value as string];
+                    return Runtime.StringMethods[key];
                 }
             }
 
