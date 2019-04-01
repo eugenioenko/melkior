@@ -194,7 +194,7 @@ namespace Melkior
                 case TokenType.Minus:
                     return new Number(-(double)right.value);
                 case TokenType.Typeof:
-                    return new String(right.type.ToString());
+                    return right.TypeOf();
                 case TokenType.Not:
                     return new Boolean(!right.IsTruthy());
                 default:
@@ -468,6 +468,61 @@ namespace Melkior
                 return new Any(null, DataType.Null);
             }
 
+            if (iterable.IsRange())
+            {
+                var start = ((RangeValue)iterable.value).start.ToInteger();
+                var end = ((RangeValue)iterable.value).end.ToInteger();
+                var step = ((RangeValue)iterable.value).step.ToInteger();
+                var index = new Number(0);
+                if (step > 0)
+                {
+                    for (var it = start; it <= end; it += step)
+                    {
+                        Scope loopScope = new Scope(scope);
+                        loopScope.Define(name, new Number(it));
+                        if (key != null)
+                        {
+                            loopScope.Define(key, index);
+                        }
+                        if (stmt.loop is Stmt.Block)
+                        {
+                            ExecuteBlock((stmt.loop as Stmt.Block).statements, loopScope);
+                        }
+                        else
+                        {
+                            ExecuteStatement(stmt.loop, loopScope);
+                        }
+                        index.value = (double)index.value + 1;
+                    }
+                }
+                else if (step < 0)
+                {
+                    for (var it = start; it >= end; it += step)
+                    {
+                        Scope loopScope = new Scope(scope);
+                        loopScope.Define(name, new Number(it));
+                        if (key != null)
+                        {
+                            loopScope.Define(key, index);
+                        }
+                        if (stmt.loop is Stmt.Block)
+                        {
+                            ExecuteBlock((stmt.loop as Stmt.Block).statements, loopScope);
+                        }
+                        else
+                        {
+                            ExecuteStatement(stmt.loop, loopScope);
+                        }
+                        index.value = (double)index.value + 1;
+                    }
+                }
+                else
+                {
+                    throw new MelkiorError("Step value in range can't be 0");
+                }
+                return new Any(null, DataType.Null);
+            }
+
             Error(stmt.iterable + " is not an iterable collection");
             return null;
 
@@ -483,6 +538,15 @@ namespace Melkior
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
             return null;
+        }
+
+        public Any VisitRangeExpr(Expr.Range expr)
+        {
+            return new Range(new RangeValue(
+                expr.start != null ? Evaluate(expr.start) : new Null(),
+                expr.end != null ? Evaluate(expr.end) : new Null(),
+                expr.step != null ? Evaluate(expr.step) : new Null()
+            ));
         }
     }
 }

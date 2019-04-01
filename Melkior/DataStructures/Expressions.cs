@@ -17,6 +17,7 @@ namespace Melkior
             T VisitLogicalExpr(Logical expr);
             T VisitArrayExpr(Array expr);
             T VisitLiteralExpr(Literal expr);
+            T VisitRangeExpr(Range expr);
             T VisitSetExpr(Set expr);
             T VisitTernaryExpr(Ternary expr);
             T VisitUnaryExpr(Unary expr);
@@ -67,14 +68,14 @@ namespace Melkior
             public Expr callee;
             public Token paren;
             public List<Expr> args;
-            public object self;
+            public object thiz;
 
-            public Call(Expr callee, Token paren, List<Expr> args, object self)
+            public Call(Expr callee, Token paren, List<Expr> args, object thiz)
             {
                 this.callee = callee;
                 this.paren = paren;
                 this.args = args;
-                this.self = self;
+                this.thiz = thiz;
             }
 
             public override T Accept<T>(IVisitor<T> visitor)
@@ -208,6 +209,25 @@ namespace Melkior
             public override T Accept<T>(IVisitor<T> visitor)
             {
                  return visitor.VisitLiteralExpr(this);
+            }
+        }
+
+        public class Range: Expr
+        {
+            public Expr start;
+            public Expr end;
+            public Expr step;
+
+            public Range(Expr start, Expr end, Expr step)
+            {
+                this.start = start;
+                this.end = end;
+                this.step = step;
+            }
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                 return visitor.VisitRangeExpr(this);
             }
         }
 

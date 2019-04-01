@@ -64,6 +64,7 @@
     <Compile Include="DataStructures\Expressions.cs" />
     <Compile Include="DataTypes\Function.cs" />
     <Compile Include="DataTypes\Null.cs" />
+    <Compile Include="DataTypes\Range.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="DataTypes\Any.cs" />
     <Compile Include="DataTypes\Number.cs" />

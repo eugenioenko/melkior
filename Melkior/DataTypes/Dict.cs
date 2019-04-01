@@ -7,7 +7,7 @@ namespace Melkior
     class Dict : Any
     {
 
-        public Dict(Dictionary<Any, Any> value) : base(value, DataType.Dict) {
+        public Dict(Dictionary<Any, Any> value) : base(value, DataType.Dictionary) {
             this.value = value;
         }
 
