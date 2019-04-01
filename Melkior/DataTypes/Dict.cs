@@ -15,7 +15,7 @@ namespace Melkior
         {
             try
             {
-                return (value as Dictionary<Any, Any>)[key];
+                return ((Dictionary<Any, Any>)value)[key];
             }
             catch
             {
@@ -25,7 +25,7 @@ namespace Melkior
 
         public new void Set(Any key, Any value)
         {
-            (this.value as Dictionary<Any, Any>)[key] = value;
+            ((Dictionary<Any, Any>)this.value)[key] = value;
         }
 
     }

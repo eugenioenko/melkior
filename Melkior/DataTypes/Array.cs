@@ -19,7 +19,7 @@ namespace Melkior
             {
                 try
                 {
-                    return (value as List<Any>)[Convert.ToInt32(key.value)];
+                    return ((List<Any>)value)[Convert.ToInt32(key.value)];
                 }
                 catch
                 {
@@ -30,7 +30,7 @@ namespace Melkior
             {
                 if (key.value as string == "length")
                 {
-                    return new Number((value as List<Any>).Count);
+                    return new Number(((List<Any>)value).Count);
                 }
 
                 if (Runtime.ArrayMethods.ContainsKey(key))
@@ -46,16 +46,16 @@ namespace Melkior
             if (key.IsNumber())
             {
                 var index = Convert.ToInt32(key.value);
-                var length = (this.value as List<Any>).Count;
+                var length = ((List<Any>)this.value).Count;
 
                 if (index >= length)
                 {
-                    (this.value as List<Any>).AddRange(
+                    ((List<Any>)this.value).AddRange(
                         Enumerable.Repeat(new Any(null, DataType.Null), index - length + 1)
                     );
                 }                
                  
-                (this.value as List<Any>)[index] = value;
+                ((List<Any>)this.value)[index] = value;
                 return;
              
             }
@@ -67,7 +67,7 @@ namespace Melkior
         {
             return new String(
                 string
-                    .Join(separator.value as string, (array.value as List<Any>)
+                    .Join((string)separator.value, ((List<Any>)array.value)
                     .Select(r => r.ToString()))
             );
         }
@@ -75,7 +75,7 @@ namespace Melkior
         public override string ToString()
         {
             return "[" +
-                string.Join(", ", (value as List<Any>)
+                string.Join(", ", ((List<Any>)value)
                 .Select(r => r.ToString()))
              + "]";
         }

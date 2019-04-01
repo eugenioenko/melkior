@@ -207,6 +207,11 @@ namespace Melkior
             return Convert.ToInt32(value);
         }
 
+        public double ToDouble()
+        {
+            return Convert.ToDouble(value);
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as Any);
