@@ -19,7 +19,7 @@ namespace Melkior
                 try
                 {
                     return new String(
-                        (value as string)[Convert.ToInt32(key.value)].ToString()
+                        (value.ToString())[Convert.ToInt32(key.value)].ToString()
                     );
                 }
                 catch
@@ -30,7 +30,7 @@ namespace Melkior
 
             if (key.IsString())
             {
-                if (key.value as string == "length")
+                if (key.value.ToString() == "length")
                 {
                     return Length(this);
                 }
@@ -46,7 +46,7 @@ namespace Melkior
 
         public static Number Length(String str)
         {
-            return new Number((str.value as string).Length);
+            return new Number((str.value.ToString()).Length);
         }
 
         /// <summary>
@@ -62,20 +62,19 @@ namespace Melkior
             if (separators.IsArray())
             {
                 sep = (separators.value as List<Any>)
-                    .ConvertAll(val => val.value as string)
+                    .ConvertAll(val => val.ToString())
                     .ToArray();
             }
             else
             {
-                var list = new List<string>();
-                list.Add(separators.ToString());
+                var list = new List<string>(){ separators.ToString() };
                 sep = list.ToArray();
             }
 
-            var splitted = (self.value as string)
+            var splitted = (self.value.ToString())
                 .Split(sep, StringSplitOptions.None)
                 .ToList()
-                .ConvertAll(val => new String(val) as Any);
+                .ConvertAll(val => (Any)new String(val));
 
             return new Array(splitted);
         }
@@ -107,7 +106,7 @@ namespace Melkior
         /// <returns>true or false</returns>
         public static Boolean Contains(String self, Any other)
         {
-            return new Boolean((self.value as string).Contains(other.ToString()));
+            return new Boolean((self.value.ToString()).Contains(other.ToString()));
         }
 
         /// <summary>
@@ -118,7 +117,7 @@ namespace Melkior
         /// <returns>boolean true or false</returns>
         public static Boolean EndsWith(String self, Any other)
         {
-            return new Boolean((self.value as string).EndsWith(other.ToString()));
+            return new Boolean((self.value.ToString()).EndsWith(other.ToString()));
         }
 
         /// <summary>
@@ -129,7 +128,7 @@ namespace Melkior
         /// <returns>If found the zero based index of the occurrence. If not found returns -1</returns>
         public static Number IndexOf(String self, Any other)
         {
-            return new Number((self.value as string).IndexOf(other.ToString()));
+            return new Number((self.value.ToString()).IndexOf(other.ToString()));
         }
 
         /// <summary>
@@ -140,7 +139,7 @@ namespace Melkior
         /// <returns>If found the zero based index of the occurrence. If not found returns -1</returns>
         public static Number LastIndexOf(String self, Any other)
         {
-            return new Number((self.value as string).LastIndexOf(other.ToString()));
+            return new Number((self.value.ToString()).LastIndexOf(other.ToString()));
         }
 
         /// <summary>
@@ -152,7 +151,7 @@ namespace Melkior
         /// <returns>Returns a new string with all the ocurrences of old value replaced with new value</returns>
         public static String Replace(String self, Any oldValue, Any newValue)
         {
-            return new String((self.value as string).Replace(oldValue.ToString(), newValue.ToString()));
+            return new String((self.value.ToString()).Replace(oldValue.ToString(), newValue.ToString()));
         }
 
         /// <summary>
@@ -163,7 +162,7 @@ namespace Melkior
         /// <returns>true or false</returns>
         public static Boolean StartsWith(String self, Any other)
         {
-            return new Boolean((self.value as string).StartsWith(other.ToString()));
+            return new Boolean((self.value.ToString()).StartsWith(other.ToString()));
         }
 
         /// <summary>
@@ -173,7 +172,7 @@ namespace Melkior
         /// <returns>new lowercased string</returns>
         public static String ToLower(String self)
         {
-            return new String((self.value as string).ToLower());
+            return new String((self.value.ToString()).ToLower());
         }
 
         /// <summary>
@@ -183,7 +182,7 @@ namespace Melkior
         /// <returns>new upercased string</returns>
         public static String ToUpper(String self)
         {
-            return new String((self.value as string).ToUpper());
+            return new String((self.value.ToString()).ToUpper());
         }
 
         /// <summary>
@@ -197,12 +196,67 @@ namespace Melkior
         {
             if(length.IsNull())
             {
-                return new String((self.value as string).Substring(start.ToInteger()));
+                return new String((self.value.ToString()).Substring(start.ToInteger()));
             }
             else
             {
-                return new String((self.value as string).Substring(start.ToInteger(), length.ToInteger()));
+                return new String((self.value.ToString()).Substring(start.ToInteger(), length.ToInteger()));
             }
+        }
+
+        /// <summary>
+        /// Reverses the string and returns it
+        /// </summary>
+        /// <param name="self">The string to be reversed</param>
+        /// <returns>The reversed string</returns>
+        public static String Reverse(String self)
+        {
+            char[] str = (self.value.ToString()).ToCharArray();
+            System.Array.Reverse(str);
+            return new String(new string(str));
+        }
+
+        /// <summary>
+        /// Executes a callback on each character of the string
+        /// </summary>
+        /// <param name="self">the self string to be iterated</param>
+        /// <param name="callback">the callback function to be executed</param>
+        /// <returns>Returns self string</returns>
+        public static Any Each(String self, Callable callback, Interpreter inter)
+        {
+            int index = 0;
+            foreach(var character in (self.value.ToString()))
+            {
+                callback.Call(inter, self, new List<Any>()
+                {
+                    new String(character.ToString()), new Number(index), self
+                });
+                index += 1;
+            }
+            return self;
+        }
+        /// <summary>
+        /// Rempas each character of the string by using values returned from callback function
+        /// </summary>
+        /// <param name="self">the self string to be remapped</param>
+        /// <param name="callback">the callback function</param>
+        /// <param name="inter"></param>
+        /// <returns>The new remapped string</returns>
+        public static String Map(String self, Callable callback, Interpreter inter)
+        {
+            int index = 0;
+            var result = new List<Any>();
+            foreach (var character in (self.value.ToString()))
+            {
+                result.Add(
+                    callback.Call(inter, self, new List<Any>()
+                    {
+                        new String(character.ToString()), new Number(index), self
+                    })
+                );
+                index += 1;
+            }
+            return new String(string.Join("", result.Select(r => r.ToString())));
         }
 
     }

@@ -13,14 +13,17 @@ namespace Melkior
         {
             { new String("concat"), Strings.Concat },
             { new String("contains"), Strings.Contains },
+            { new String("each"), Strings.Each },
             { new String("includes"), Strings.Contains },
             { new String("starstwith"), Strings.StartsWith },
             { new String("endswith"), Strings.EndsWith },
             { new String("indexof"), Strings.IndexOf },
             { new String("lastindexof"), Strings.LastIndexOf },
+            { new String("map"), Strings.Map },
             { new String("substring"), Strings.SubString },
             { new String("toupper"), Strings.ToUpper },
             { new String("tolower"), Strings.ToLower },
+            { new String("reverse"), Strings.Reverse },
             { new String("split"), Strings.Split }
         };
 
@@ -112,6 +115,27 @@ namespace Melkior
                       return String.SubString(self as String, args[0] as Number, args[1] as Number);
               }
            );
+
+            public static Callable Reverse = new Callable(
+                (Interpreter inter, Any self, List<Any> args) =>
+                {
+                     return String.Reverse(self as String);
+                }
+            );
+
+            public static Callable Each = new Callable(
+                (Interpreter inter, Any self, List<Any> args) =>
+                {
+                    return String.Each(self as String, args[0] as Callable, inter);
+                }
+            );
+
+            public static Callable Map = new Callable(
+                (Interpreter inter, Any self, List<Any> args) =>
+                {
+                    return String.Map(self as String, args[0] as Callable, inter);
+                }
+            );
         }
 
 
