@@ -572,6 +572,10 @@ namespace Melkior
             {
                 return DoLambda();
             }
+            if (Match(TokenType.Range))
+            {
+                return DoRange();
+            }
 
             Error(Peek(), "Unexpected character");
             return null;
@@ -649,6 +653,29 @@ namespace Melkior
             }
             var function = new Stmt.Function(lambda, parameters, body);
             return new Expr.Lambda(function);
+        }
+
+        private Expr DoRange()
+        {
+            Expr start = null;
+            Expr end = null;
+            Expr step = null;
+
+            Consume(TokenType.LeftBracket, "Expected '[' at start of range epxression");
+            if (!Check(TokenType.Colon))
+            {
+                start = Expression();
+            }
+            if (Match(TokenType.Colon) && !Check(TokenType.Colon))
+            {
+                end = Expression();
+            }
+            if (Match(TokenType.Colon) && !Check(TokenType.RightBracket))
+            {
+                step = Expression();
+            }
+            Consume(TokenType.RightBracket, "Expected ']' after range expression");
+            return new Expr.Range(start, end, step);
         }
 
     }

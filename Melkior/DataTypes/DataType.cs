@@ -1,6 +1,6 @@
-﻿namespace Melkior
+namespace Melkior
 {
-   public enum DataType
+    public enum DataType
     {
         Null,
         Any,
@@ -8,8 +8,9 @@
         Boolean,
         String,
         Array,
-        Dict,
+        Dictionary,
         Function,
+        Range,
         Entity
     }
 }

@@ -21,7 +21,7 @@ namespace generator
                 { "Literal", new string[]{"object value", "DataType type"}},
                 // { "New", new string[]{"Expr constructor"}},
                 // { "Postfix", new string[]{"Token name", "number increment"}},
-                // { "Range", new string[]{"Expr start", "Expr end", "Expr step"}},
+                { "Range", new string[]{"Expr start", "Expr end", "Expr step"}},
                 // { "RegEx", new string[]{"RegExp value"}},
                 { "Set", new string[]{"Expr entity", "Expr key", "Expr value"}},
                 // { "Super", new string[]{"List<Token> index", "List<Expr> args"}},

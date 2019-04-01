@@ -36,6 +36,11 @@ namespace Melkior
             throw new MelkiorError(key + " does not exist in" + this);
         }
 
+        public Any TypeOf()
+        {
+            return new String(type.ToString().ToLower());
+        }
+
         public bool IsNull()
         {
             return type == DataType.Null;
@@ -63,7 +68,12 @@ namespace Melkior
 
         public bool IsDict()
         {
-            return type == DataType.Dict;
+            return type == DataType.Dictionary;
+        }
+
+        public bool IsRange()
+        {
+            return type == DataType.Range;
         }
 
         public void Set(Any key, Any value)
@@ -199,6 +209,7 @@ namespace Melkior
             if (value == null) return "null";
             if (IsBoolean()) return (this as Boolean).ToString();
             if (IsArray()) return (this as Array).ToString();
+            if (IsRange()) return (this as Range).ToString();
             return value.ToString();
         }
 

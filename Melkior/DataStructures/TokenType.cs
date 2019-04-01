@@ -73,6 +73,7 @@ namespace Melkior
         For,
         Return,
         Repeat,
+        Range,
         Until,
         With
     }
