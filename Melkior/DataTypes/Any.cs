@@ -202,6 +202,11 @@ namespace Melkior
             return value.ToString();
         }
 
+        public int ToInteger()
+        {
+            return Convert.ToInt32(value);
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as Any);
@@ -210,7 +215,6 @@ namespace Melkior
         public bool Equals(Any other)
         {
             return value.Equals(other.value);
-
         }
 
         public override int GetHashCode()

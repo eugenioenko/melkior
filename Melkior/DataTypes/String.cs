@@ -10,7 +10,7 @@ namespace Melkior
     {
         public String(string value) : base(value, DataType.String) {
             this.value = value;
-           
+
         }
 
         public new Any Get(Any key)
@@ -103,16 +103,106 @@ namespace Melkior
         ///  Determines whether one string can be found in another
         /// </summary>
         /// <param name="self"></param>
-        /// <param name="other"></param>
-        /// <returns>boolean true or false</returns>
+        /// <param name="other">The string to search</param>
+        /// <returns>true or false</returns>
         public static Boolean Contains(String self, Any other)
         {
             return new Boolean((self.value as string).Contains(other.ToString()));
         }
 
+        /// <summary>
+        /// Determines whether one string ends with another
+        /// </summary>
+        /// <param name="self">The string on which to search</param>
+        /// <param name="other">The string to search</param>
+        /// <returns>boolean true or false</returns>
         public static Boolean EndsWith(String self, Any other)
         {
             return new Boolean((self.value as string).EndsWith(other.ToString()));
+        }
+
+        /// <summary>
+        /// Gets the zero based index of the first occurrence of one string in another
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="other">The string to search</param>
+        /// <returns>If found the zero based index of the occurrence. If not found returns -1</returns>
+        public static Number IndexOf(String self, Any other)
+        {
+            return new Number((self.value as string).IndexOf(other.ToString()));
+        }
+
+        /// <summary>
+        /// Gets the zero based index of the last occurrence of one string in another
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="other">The string to search</param>
+        /// <returns>If found the zero based index of the occurrence. If not found returns -1</returns>
+        public static Number LastIndexOf(String self, Any other)
+        {
+            return new Number((self.value as string).LastIndexOf(other.ToString()));
+        }
+
+        /// <summary>
+        /// Replaces old value with new value in the self string and returns it
+        /// </summary>
+        /// <param name="self">The string on which to replace</param>
+        /// <param name="old">The string to be replaced</param>
+        /// <param name="new">The string to replace all the occurences of oldValue</param>
+        /// <returns>Returns a new string with all the ocurrences of old value replaced with new value</returns>
+        public static String Replace(String self, Any oldValue, Any newValue)
+        {
+            return new String((self.value as string).Replace(oldValue.ToString(), newValue.ToString()));
+        }
+
+        /// <summary>
+        /// Determines whether one string starts with another
+        /// </summary>
+        /// <param name="self">The string on which to search</param>
+        /// <param name="other">The string to search</param>
+        /// <returns>true or false</returns>
+        public static Boolean StartsWith(String self, Any other)
+        {
+            return new Boolean((self.value as string).StartsWith(other.ToString()));
+        }
+
+        /// <summary>
+        /// Returns the string converted to lowercase
+        /// </summary>
+        /// <param name="self">The string to be converted</param>
+        /// <returns>new lowercased string</returns>
+        public static String ToLower(String self)
+        {
+            return new String((self.value as string).ToLower());
+        }
+
+        /// <summary>
+        /// Returns the string converted to uppercase
+        /// </summary>
+        /// <param name="self">The string to be converted</param>
+        /// <returns>new upercased string</returns>
+        public static String ToUpper(String self)
+        {
+            return new String((self.value as string).ToUpper());
+        }
+
+        /// <summary>
+        /// Retrives a part of the string starting with the specified zero based start index and length
+        /// </summary>
+        /// <param name="self">The string from which to retrive</param>
+        /// <param name="start">Zero based index from where to start</param>
+        /// <param name="length">The length of the retrived string</param>
+        /// <returns></returns>
+        public static String SubString(String self, Number start, Any length)
+        {
+            if(length.IsNull())
+            {
+                return new String((self.value as string).Substring(start.ToInteger()));
+            }
+            else
+            {
+                return new String((self.value as string).Substring(start.ToInteger(), length.ToInteger()));
+            }
         }
 
     }

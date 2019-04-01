@@ -35,12 +35,11 @@ namespace Melkior
 
                 return null;
             } 
-            catch
+            catch(Exception e)
             {
-                Error("Unhandled Error");
+                Error("Unhandled Error: " + e.Message);
+                throw;
             }
-
-            return null;
         }
 
         private Any Evaluate(Expr expr)
