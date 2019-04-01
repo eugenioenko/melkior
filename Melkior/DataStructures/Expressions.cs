@@ -67,14 +67,14 @@ namespace Melkior
             public Expr callee;
             public Token paren;
             public List<Expr> args;
-            public object thiz;
+            public object self;
 
-            public Call(Expr callee, Token paren, List<Expr> args, object thiz)
+            public Call(Expr callee, Token paren, List<Expr> args, object self)
             {
                 this.callee = callee;
                 this.paren = paren;
                 this.args = args;
-                this.thiz = thiz;
+                this.self = self;
             }
 
             public override T Accept<T>(IVisitor<T> visitor)

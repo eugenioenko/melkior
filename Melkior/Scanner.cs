@@ -177,7 +177,14 @@ namespace Melkior
             {
 
                 TokenType tokenType = (TokenType)Enum.Parse(typeof(TokenType), capitalized);
-                AddToken(tokenType, value);
+                if (tokenType != TokenType.String && tokenType != TokenType.Number)
+                {
+                    AddToken(tokenType, value);
+                }
+                else
+                {
+                    AddToken(TokenType.Identifier, value);
+                }
             }
             else
             {

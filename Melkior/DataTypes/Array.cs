@@ -25,20 +25,17 @@ namespace Melkior
                 {
                     return new Any(null, DataType.Null);
                 }
-               
             }
             if (key.IsString())
             {
-                switch (key.value)
+                if (key.value as string == "length")
                 {
-                    case "length":
-                        return new Number((value as List<Any>).Count);
-                    case "size":
-                        return Runtime.ArrayLength(value as List<Any>);
-                    case "each":
-                        return Runtime.ArrayEach(value as List<Any>);
-                    case "map":
-                        return Runtime.ArrayMap(value as List<Any>);
+                    return new Number((value as List<Any>).Count);
+                }
+
+                if (Runtime.ArrayMethods.ContainsKey(key))
+                {
+                    return Runtime.ArrayMethods[key];
                 }
             }
             throw new MelkiorError(key + " does not exist in" + this);
@@ -53,19 +50,34 @@ namespace Melkior
 
                 if (index >= length)
                 {
-                    (this.value as List<Any>).AddRange(Enumerable.Repeat(new Any(null, DataType.Null), index - length + 1));
+                    (this.value as List<Any>).AddRange(
+                        Enumerable.Repeat(new Any(null, DataType.Null), index - length + 1)
+                    );
                 }                
                  
                 (this.value as List<Any>)[index] = value;
                 return;
              
             }
+
             throw new MelkiorError(key + " is not a valid index for array " + this);
         }
 
-        public new string ToString()
+        public static String Join(Array array, String separator)
         {
-            return "<Array[" + (value as List<Any>).Count + "]>";
+            return new String(
+                string
+                    .Join(separator.value as string, (array.value as List<Any>)
+                    .Select(r => r.ToString()))
+            );
+        }
+
+        public override string ToString()
+        {
+            return "[" +
+                string.Join(", ", (value as List<Any>)
+                .Select(r => r.ToString()))
+             + "]";
         }
     }
 

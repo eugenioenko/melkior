@@ -9,14 +9,23 @@ namespace Melkior
         public Scope scope;
         private List<Stmt> statements;
 
-        public Interpreter() { }
+        public Interpreter() {
+            global = new Scope();
+            scope = global;
+
+            global.Define("split", new Callable(
+                (Interpreter inter, Any self, List<Any> args) => {
+                    return String.Split(args[0] as String, args[1]);
+                })
+            );
+
+        }
 
         public Any Interpret(List<Stmt> statements)
         {
 
             this.statements = statements;
-            global = new Scope();
-            scope = global;
+            
             try
             {
                 foreach (var statement in statements)
@@ -26,12 +35,11 @@ namespace Melkior
 
                 return null;
             } 
-            catch
+            catch(Exception e)
             {
-                Error("Unhandled Error");
+                Error("Unhandled Error: " + e.Message);
+                throw;
             }
-
-            return null;
         }
 
         private Any Evaluate(Expr expr)
@@ -112,8 +120,14 @@ namespace Melkior
                 Error("Runtime Error" + callee + " is not a function");
             }
 
+            Any self = null;
+            if (expr.callee is Expr.Get)
+            {
+                self = Evaluate((expr.callee as Expr.Get).entity);
+            }
+
             // todo add aritiy check
-            return (callee as Callable).Call(this, callee, args);
+            return (callee as Callable).Call(this, self, args);
         }
 
         public Any VisitGroupingExpr(Expr.Group expr)
@@ -127,14 +141,14 @@ namespace Melkior
 
             if (expr.oprtr.type == TokenType.Or)
             {
-                if (left.ToBoolean())
+                if (left.IsTruthy())
                 {
                     return left;
                 }
             }
             if (expr.oprtr.type == TokenType.And)
             {
-                if (!left.ToBoolean())
+                if (!left.IsTruthy())
                 {
                     return left;
                 }
@@ -168,7 +182,7 @@ namespace Melkior
 
         public Any VisitTernaryExpr(Expr.Ternary expr)
         {
-            return Evaluate(expr.condition).ToBoolean() ? Evaluate(expr.thenExpr) : Evaluate(expr.elseExpr);
+            return Evaluate(expr.condition).IsTruthy() ? Evaluate(expr.thenExpr) : Evaluate(expr.elseExpr);
         }
 
         public Any VisitUnaryExpr(Expr.Unary expr)
@@ -182,7 +196,7 @@ namespace Melkior
                 case TokenType.Typeof:
                     return new String(right.type.ToString());
                 case TokenType.Not:
-                    return new Boolean(!right.ToBoolean());
+                    return new Boolean(!right.IsTruthy());
                 default:
                     throw new NotImplementedException();
             }
@@ -264,7 +278,7 @@ namespace Melkior
 
         public Any VisitIfStmt(Stmt.If stmt)
         {
-            if (Evaluate(stmt.condition).ToBoolean())
+            if (Evaluate(stmt.condition).IsTruthy())
             {
                 return Execute(stmt.thenStmt);
             }
@@ -278,6 +292,7 @@ namespace Melkior
         public Any VisitPrintStmt(Stmt.Print stmt)
         {
             var value = Evaluate(stmt.expression);
+            var str = new String("method");
             Console.WriteLine(value);
             return value;
         }
@@ -298,7 +313,7 @@ namespace Melkior
 
         public Any VisitWhileStmt(Stmt.While stmt)
         {
-            while (Evaluate(stmt.condition).ToBoolean())
+            while (Evaluate(stmt.condition).IsTruthy())
             {
                 Execute(stmt.loop);
             }
@@ -310,7 +325,7 @@ namespace Melkior
             do
             {
                 Execute(stmt.loop);
-            } while (Evaluate(stmt.condition).ToBoolean());
+            } while (Evaluate(stmt.condition).IsTruthy());
             return null;
         }
 

@@ -508,9 +508,10 @@ namespace Melkior
                         args.Add(Expression());
                     }
                     while (Match(TokenType.Comma));
-                    Token paren = Consume(TokenType.RightParen, "Expected ')' after function arguments");
-                    callee = new Expr.Call(callee, paren, args, null);
+                    
                 }
+                Token paren = Consume(TokenType.RightParen, "Expected ')' after function arguments");
+                callee = new Expr.Call(callee, paren, args, null);
                 return callee;
             }
             while (Match(TokenType.LeftParen));
@@ -545,7 +546,7 @@ namespace Melkior
             }
             if (Match(TokenType.Number))
             {
-                return new Expr.Literal(Double.Parse(Previous().literal.ToString()), DataType.Number);
+                return new Expr.Literal(double.Parse(Previous().literal.ToString()), DataType.Number);
             }
             if (Match(TokenType.String))
             {

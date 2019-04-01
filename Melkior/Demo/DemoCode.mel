@@ -91,4 +91,15 @@ do
     print list;
 end
 
+
+// string methods
+
+print "alpha".concat("beta");
+print "alpha".contains("beta") +  " = false";
+print "alpha".contains("pha") +  " = true";
+print "alpha".includes("lph") +  " = true";
+//print "toupercase".toupper();
+print "TOLOWERCASE".tolower();
+//print "a,b,c,d,e,f,g,h".split(",");
+//print "the substring should be substring".substring(35);
 pause

@@ -1,4 +1,4 @@
-﻿namespace Melkior
+namespace Melkior
 {
     class Token
     {
@@ -17,7 +17,7 @@
 
         public override string ToString()
         {
-            return "[(" + this.line.ToString() + "):" + this.lexeme + "]";
+            return lexeme;
         }
     }
 }
