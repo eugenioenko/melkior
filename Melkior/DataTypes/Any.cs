@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Melkior
 {
-    class Any : IEquatable<Any>
+    public class Any : IEquatable<Any>
     {
         public object value;
         public readonly DataType type;

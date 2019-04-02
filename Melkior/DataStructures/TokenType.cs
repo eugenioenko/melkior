@@ -1,6 +1,6 @@
 namespace Melkior
 {
-    enum TokenType
+    public enum TokenType
     {
         // parser tokens
         Eof,

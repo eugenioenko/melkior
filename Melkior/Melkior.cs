@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Melkior
 {
-    class Melkior
+    public class Melkior
     {
         static void Main(string[] args)
         {
@@ -20,7 +20,7 @@ namespace Melkior
                 return;
             }
             string source = File.ReadAllText(filename);
-            Melkior.Execute(source);
+            Execute(source);
         }
 
         static void HelpAndVersion()
@@ -33,18 +33,24 @@ namespace Melkior
             Console.WriteLine("example: melkior source_code.mel ['first argument', 123]");
         }
 
-        static void Execute(string source)
+        public static List<Stmt> Execute(string source) 
         {
             Scanner scanner = new Scanner();
             List<Token> tokens = scanner.Scan(source);
-
+            if (tokens == null)
+            {
+                return null;
+            }
 
             Parser parser = new Parser();
             var statements = parser.Parse(tokens);
 
+            if (statements == null)
+            {
+                return null;
+            }
             Interpreter interpreter = new Interpreter();
-            var result = interpreter.Interpret(statements);
-
+            return interpreter.Interpret(statements);
         }
     }
 }

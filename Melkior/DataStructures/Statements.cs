@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Melkior
 {
-    abstract class Stmt
+    public abstract class Stmt
     {
         public Any result;
 

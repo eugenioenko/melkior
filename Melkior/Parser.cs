@@ -26,12 +26,16 @@ namespace Melkior
                 }
                 return statements;
             }
-            catch
+            catch(MelkiorError e)
             {
-                Error(Peek(), "Unhandled Parsing Error");
+                Console.WriteLine(e.message);
+                return null;
             }
-
-            return null;
+            catch(Exception)
+            {
+                Console.WriteLine("[Unhandeled Parse Error] => at " + Peek());
+                return null;
+            }
         }
 
         private bool Match(params TokenType[] types)
@@ -104,10 +108,11 @@ namespace Melkior
 
         private void Error(Token token, string message)
         {
-            Console.WriteLine("[Parse Error] => " + token +  ": " + message);
-            Console.ReadKey();
-            System.Environment.Exit(-1);
-           
+            var line = token.line;
+            var col = token.column;
+            var chr = token.lexeme;
+            throw new MelkiorError("[Melkior Parse Error] at (" + line +
+                ":" + col + ") near `" + chr + "` => " + message);
         }
 
         private Stmt Declaration()

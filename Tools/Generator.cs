@@ -55,7 +55,7 @@ namespace generator
             lines.Add("");
             lines.Add("namespace Melkior");
             lines.Add("{");
-            lines.Add("    abstract class " + className);
+            lines.Add("    public abstract class " + className);
             lines.Add("    {");
             if (className == "Stmt")
             {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Melkior
 {
-    abstract class Expr
+    public abstract class Expr
     {
         public interface IVisitor<T>
         {
