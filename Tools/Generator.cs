@@ -57,6 +57,11 @@ namespace generator
             lines.Add("{");
             lines.Add("    abstract class " + className);
             lines.Add("    {");
+            if (className == "Stmt")
+            {
+                lines.Add("        public Any result;");
+                lines.Add("");
+            }
             lines.Add("        public interface IVisitor<T>");
             lines.Add("        {");
             foreach (string name in ast.Keys)

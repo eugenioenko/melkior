@@ -20,15 +20,7 @@ namespace Melkior
                 return;
             }
             string source = File.ReadAllText(filename);
-            Scanner scanner = new Scanner();
-            List<Token> tokens = scanner.Scan(source);
-
-
-            Parser parser = new Parser();
-            var statements = parser.Parse(tokens);
-
-            Interpreter interpreter = new Interpreter();
-            interpreter.Interpret(statements);
+            Melkior.Execute(source);
         }
 
         static void HelpAndVersion()
@@ -39,6 +31,20 @@ namespace Melkior
             Console.WriteLine("source: the filename of the sourcecode to be executed");
             Console.WriteLine("arguments: an array list of arguments to be passed to the main/entry function");
             Console.WriteLine("example: melkior source_code.mel ['first argument', 123]");
+        }
+
+        static void Execute(string source)
+        {
+            Scanner scanner = new Scanner();
+            List<Token> tokens = scanner.Scan(source);
+
+
+            Parser parser = new Parser();
+            var statements = parser.Parse(tokens);
+
+            Interpreter interpreter = new Interpreter();
+            var result = interpreter.Interpret(statements);
+
         }
     }
 }

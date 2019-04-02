@@ -4,6 +4,8 @@ namespace Melkior
 {
     abstract class Stmt
     {
+        public Any result;
+
         public interface IVisitor<T>
         {
             T VisitBlockStmt(Block stmt);
