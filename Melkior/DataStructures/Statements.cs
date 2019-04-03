@@ -5,6 +5,13 @@ namespace Melkior
     public abstract class Stmt
     {
         public Any result;
+        public int line;
+
+        public Stmt Line(Token token)
+        {
+            line = token.line;
+            return this;
+        }
 
         public interface IVisitor<T>
         {

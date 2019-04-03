@@ -199,7 +199,7 @@ namespace Melkior
             }
             if (value == null)
             {
-                throw new NullReferenceException();
+                throw new MelkiorError("Unknown error value Any is null");
             }
             return true;
         }

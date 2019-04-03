@@ -16,20 +16,31 @@ namespace Melkior
         public List<Stmt> Interpret(List<Stmt> statements)
         {
             this.statements = statements;
-            
+            var current = statements[0];
             try
             {
                 foreach (var statement in statements)
                 {
+                    current = statement;
                     Execute(statement);
                 }
-            } 
+            }
+            catch (MelkiorError error)
+            {
+                Console.WriteLine("[Melkior Runtime Error] (line: " + current.line + ") " +
+                    "near " + current.ToString());
+                Console.WriteLine(error.message);
+                return null;
+
+            }
             catch(Exception e)
             {
-                Error("Unhandled Error: " + e.Message);
-                throw;
-            }
+                Console.WriteLine("[Melkior Unhandeled Runtime Error] (line: " + current.line +
+                    ") near " + current.ToString());
+                Console.WriteLine(e.Message);
 
+                return null;
+            }
             return statements;
         }
 
@@ -47,8 +58,7 @@ namespace Melkior
 
         private void Error(string message)
         {
-            Console.WriteLine("[Runtime Error] => " + message);
-            Environment.Exit(-1);
+            throw new MelkiorError(message);
         }
 
         public Any VisitAssignExpr(Expr.Assign expr)
@@ -109,7 +119,7 @@ namespace Melkior
 
             if (callee.type != DataType.Function || !(callee is Callable))
             {
-                Error("Runtime Error" + callee + " is not a function");
+                Error("`" + callee + "` is not a function");
             }
 
             Any self = null;
