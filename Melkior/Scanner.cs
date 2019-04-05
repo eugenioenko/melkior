@@ -9,6 +9,7 @@ namespace Melkior
         public List<Token> tokens;
         private int current;
         private int line;
+        private int column;
         private int start;
 
         public Scanner() { }
@@ -18,6 +19,7 @@ namespace Melkior
             this.source = source;
             current = 0;
             line = 1;
+            column = 1;
             start = 0;
             tokens = new List<Token>();
         }
@@ -32,13 +34,17 @@ namespace Melkior
                     start = current;
                     ScanToken();
                 }
-                tokens.Add(new Token(TokenType.Eof, null, null, -1));
+                tokens.Add(new Token(TokenType.Eof, null, null, -1, -1));
 
                 return tokens;
             }
-            catch
+            catch (MelkiorError error)
             {
-                Error("Unhandled Scan Error");
+                Console.WriteLine(error);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("[Unhandeled Scan Error] => at " + line + ":" + column);
             }
 
             return null;
@@ -50,7 +56,14 @@ namespace Melkior
 
         private char Advance()
         {
+            column += 1;
             return source[current++];
+        }
+
+        private void AdvanceLine()
+        {
+            line += 1;
+            column = 1;
         }
 
         private bool Match(char expected)
@@ -89,7 +102,7 @@ namespace Melkior
         private void AddToken(TokenType type, object literal)
         {
             string text = source.Substring(start, current - start);
-            var token = new Token(type, text, literal, line);
+            var token = new Token(type, text, literal, line, column);
             tokens.Add(token);
         }
 
@@ -99,7 +112,7 @@ namespace Melkior
             {
                 if (Peek() == '\n')
                 {
-                    line++;
+                    AdvanceLine();
                 }
                 Advance();
             }
@@ -111,7 +124,7 @@ namespace Melkior
             {
                 if (Peek() == '\n')
                 {
-                    line++;
+                    AdvanceLine();
                 }
                 Advance();
             }
@@ -132,8 +145,7 @@ namespace Melkior
 
         private void Error(string message)
         {
-            Console.WriteLine("[Scan Error]=> (" + line + "): " + message);
-            System.Environment.Exit(0);
+            throw new MelkiorError("[Scan Error]=> (" + line + "): " + message);
         }
 
         private void Number()
@@ -229,7 +241,7 @@ namespace Melkior
                         AddToken(TokenType.Slash, null);
                     }
                     break;
-                case '\n': line++; break;
+                case '\n': AdvanceLine(); break;
                 case '\'':
                 case '"':
                 case '`':

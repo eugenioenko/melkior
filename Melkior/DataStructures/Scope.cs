@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Melkior
@@ -60,7 +60,7 @@ namespace Melkior
             {
                 return parent.Get(name);
             }
-            return null;
+            return new Null();
         }
         
     }

@@ -8,38 +8,47 @@ namespace Melkior
         public Scope global;
         public Scope scope;
         private List<Stmt> statements;
-
         public Interpreter() {
             global = new Scope();
             scope = global;
-
-            global.Define("split", new Callable(
-                (Interpreter inter, Any self, List<Any> args) => {
-                    return String.Split(args[0] as String, args[1]);
-                })
-            );
-
         }
 
-        public Any Interpret(List<Stmt> statements)
+        public List<Stmt> Interpret(List<Stmt> statements)
         {
-
             this.statements = statements;
-            
+            var current = statements[0];
             try
             {
                 foreach (var statement in statements)
                 {
+                    current = statement;
                     Execute(statement);
                 }
 
+                Any main = global.Get("main");
+
+                if (!main.IsNull())
+                {
+                    ((Function)main).Call(this, new Null(), new List<Any>() { new String("argument") });
+                }
+            }
+            catch (MelkiorError error)
+            {
+                Console.WriteLine("[Melkior Runtime Error] (line: " + current.line + ") " +
+                    "near " + current.ToString());
+                Console.WriteLine(error.message);
                 return null;
-            } 
+
+            }
             catch(Exception e)
             {
-                Error("Unhandled Error: " + e.Message);
-                throw;
+                Console.WriteLine("[Melkior Unhandeled Runtime Error] (line: " + current.line +
+                    ") near " + current.ToString());
+                Console.WriteLine(e.Message);
+
+                return null;
             }
+            return statements;
         }
 
         private Any Evaluate(Expr expr)
@@ -49,13 +58,14 @@ namespace Melkior
 
         private Any Execute(Stmt stmt)
         {
-            return stmt.Accept(this);
+            var result = stmt.Accept(this);
+            stmt.result = result;
+            return result;
         }
 
         private void Error(string message)
         {
-            Console.WriteLine("[Runtime Error] => " + message);
-            Environment.Exit(-1);
+            throw new MelkiorError(message);
         }
 
         public Any VisitAssignExpr(Expr.Assign expr)
@@ -100,8 +110,7 @@ namespace Melkior
                 case TokenType.BangEqual:
                     return left != right;
                 default:
-                    return null;
-
+                    throw new MelkiorError("Unexpected binary operator: " + expr.oprtr);
             }
         }
 
@@ -117,7 +126,7 @@ namespace Melkior
 
             if (callee.type != DataType.Function || !(callee is Callable))
             {
-                Error("Runtime Error" + callee + " is not a function");
+                Error("`" + callee + "` is not a function");
             }
 
             Any self = null;
@@ -198,7 +207,7 @@ namespace Melkior
                 case TokenType.Not:
                     return new Boolean(!right.IsTruthy());
                 default:
-                    throw new NotImplementedException();
+                    throw new MelkiorError("Unexpected unary operator " + expr.oprtr);
             }
         }
 
@@ -227,16 +236,16 @@ namespace Melkior
                 Execute(statement);
             }
             scope = restoreScope;
-            return null;
+            return new Any("block", DataType.Debug);
         }
 
         private Any ExecuteStatement(Stmt statement, Scope nextScope)
         {
             var restoreScope = scope;
             scope = nextScope;
-            Execute(statement);
+            var executed = Execute(statement);
             scope = restoreScope;
-            return null;
+            return executed;
         }
 
         public Any ExecuteFunction(List<Stmt> block, Scope nextScope)
@@ -286,7 +295,7 @@ namespace Melkior
             {
                 return Execute(stmt.elseStmt);
             }
-            return null;
+            return new Any("if nop", DataType.Debug);
         }
 
         public Any VisitPrintStmt(Stmt.Print stmt)
@@ -308,7 +317,6 @@ namespace Melkior
 
             scope.Define(stmt.name.lexeme, value);
             return value;
-
         }
 
         public Any VisitWhileStmt(Stmt.While stmt)
@@ -317,7 +325,7 @@ namespace Melkior
             {
                 Execute(stmt.loop);
             }
-            return null;
+            return new Any("while", DataType.Debug);
         }
 
         public Any VisitDoWhileStmt(Stmt.DoWhile stmt)
@@ -326,7 +334,8 @@ namespace Melkior
             {
                 Execute(stmt.loop);
             } while (Evaluate(stmt.condition).IsTruthy());
-            return null;
+
+            return new Any("do while", DataType.Debug);
         }
 
         public Any VisitReturnStmt(Stmt.Return stmt)

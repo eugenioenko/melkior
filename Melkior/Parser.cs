@@ -26,12 +26,16 @@ namespace Melkior
                 }
                 return statements;
             }
-            catch
+            catch(MelkiorError e)
             {
-                Error(Peek(), "Unhandled Parsing Error");
+                Console.WriteLine(e.message);
+                return null;
             }
-
-            return null;
+            catch(Exception)
+            {
+                Console.WriteLine("[Unhandeled Parse Error] => at " + Peek());
+                return null;
+            }
         }
 
         private bool Match(params TokenType[] types)
@@ -104,10 +108,11 @@ namespace Melkior
 
         private void Error(Token token, string message)
         {
-            Console.WriteLine("[Parse Error] => " + token +  ": " + message);
-            Console.ReadKey();
-            System.Environment.Exit(-1);
-           
+            var line = token.line;
+            var col = token.column;
+            var chr = token.lexeme;
+            throw new MelkiorError("[Melkior Parse Error] at (" + line +
+                ":" + col + ") near `" + chr + "` => " + message);
         }
 
         private Stmt Declaration()
@@ -137,7 +142,7 @@ namespace Melkior
             }
             Consume(TokenType.Semicolon, "Expected semicolon after a variable initialization");
             var writable = varType == TokenType.Var ? true : false;
-            return new Stmt.Var(name, null, initializer, writable);
+            return new Stmt.Var(name, null, initializer, writable).Line(Previous());
         }
 
         private Stmt FuncStatement()
@@ -147,7 +152,7 @@ namespace Melkior
             Discard(TokenType.Do, "Unexpected 'do' at the start of function body");
             List<Stmt> body = Block(TokenType.End);
             Consume(TokenType.End, "Expected 'end' at the end of a function");
-            return new Stmt.Function(name, parameters, body);
+            return new Stmt.Function(name, parameters, body).Line(name);
         }
 
         private List<Token> FuncParameters()
@@ -211,12 +216,12 @@ namespace Melkior
         {
             var value = Expression();
             Consume(TokenType.Semicolon, "Expected a semicolon after print statement");
-            return new Stmt.Print(value);
+            return new Stmt.Print(value).Line(Previous());
         }
 
         private Stmt PauseStatement()
         {
-            return new Stmt.Pause();
+            return new Stmt.Pause().Line(Previous());
         }
 
         private Stmt BlockStatement()
@@ -227,15 +232,16 @@ namespace Melkior
         }
 
         private Stmt IfStatement()
-        { 
+        {
+            var line = Previous();
             Expr condition = Expression();
             Consume(TokenType.Then, "Expected 'then' after if condition");
             Discard(TokenType.Do, "Unexpected 'do' after 'then'");
-            Stmt thenStmt = new Stmt.Block(Block(TokenType.End, TokenType.Else, TokenType.Elseif));
+            Stmt thenStmt = new Stmt.Block(Block(TokenType.End, TokenType.Else, TokenType.Elseif)).Line(line);
 
             if (Match(TokenType.End))
             {
-                return new Stmt.If(condition, thenStmt, null);
+                return new Stmt.If(condition, thenStmt, null).Line(line);
             }
 
             Stmt elseStmt = null;
@@ -243,13 +249,13 @@ namespace Melkior
             {
                 elseStmt = new Stmt.Block(Block(TokenType.End));
                 Consume(TokenType.End, "Expected 'end' after else block");
-                return new Stmt.If(condition, thenStmt, elseStmt);
+                return new Stmt.If(condition, thenStmt, elseStmt).Line(line);
             }
 
             if (Match(TokenType.Elseif))
             {
                 elseStmt = IfStatement();
-                return new Stmt.If(condition, thenStmt, elseStmt);
+                return new Stmt.If(condition, thenStmt, elseStmt).Line(line);
             }
 
             Consume(TokenType.End, "Expected 'end' after if block");
@@ -258,19 +264,20 @@ namespace Melkior
 
         private Stmt WhileStatement()
         {
+            var line = Previous();
             Expr condition = Expression();
             Stmt loop = Statement();
 
-            return new Stmt.While(condition, loop);
+            return new Stmt.While(condition, loop).Line(line);
         }
 
         private Stmt RepeatStatement()
         {
-            
+            var line = Previous();
             Stmt loop = new Stmt.Block(Block(TokenType.While));
             Consume(TokenType.While, "while condition expected after repeat block");
             Expr condition = Expression();
-            return new Stmt.DoWhile(loop, condition);
+            return new Stmt.DoWhile(loop, condition).Line(line);
         }
 
         private List<Stmt> Block(params TokenType[] enders)
@@ -293,7 +300,7 @@ namespace Melkior
                 value = Expression();
             }
             Consume(TokenType.Semicolon, "Expected a semicolon after return statement");
-            return new Stmt.Return(value);
+            return new Stmt.Return(value).Line(keyword);
         }
 
         private Stmt ForStatement()
@@ -312,14 +319,14 @@ namespace Melkior
             Consume(TokenType.In, "Expected 'in' after foreach variable");
             Expr iterable = Primary();
             Stmt loop = Statement();
-            return new Stmt.Foreach(item, key, iterable, loop);
+            return new Stmt.Foreach(item, key, iterable, loop).Line(item);
         }
       
         private Stmt ExpressionStatement()
         {
             var expression = Expression();
-            Consume(TokenType.Semicolon, "Expected a semicolon after an expression");
-            return new Stmt.Expression(expression);
+            var line = Consume(TokenType.Semicolon, "Expected a semicolon after an expression");
+            return new Stmt.Expression(expression).Line(line);
         }
 
         private Expr Expression()
