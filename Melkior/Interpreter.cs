@@ -25,14 +25,12 @@ namespace Melkior
                     Execute(statement);
                 }
 
-                Function main = (Function) global.Get("main");
+                Any main = global.Get("main");
 
-                if (main.IsNull())
+                if (!main.IsNull())
                 {
-                    throw new MelkiorError("entry point 'main' function definition is required inside a module");
+                    ((Function)main).Call(this, new Null(), new List<Any>() { new String("argument") });
                 }
-
-                main.Call(this, new Null(), new List<Any>() { new String("argument") });
             }
             catch (MelkiorError error)
             {
