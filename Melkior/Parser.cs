@@ -22,7 +22,7 @@ namespace Melkior
             {
                 while (!Eof())
                 {
-                    statements.Add(Declaration());
+                    statements.Add(Module());
                 }
                 return statements;
             }
@@ -113,6 +113,19 @@ namespace Melkior
             var chr = token.lexeme;
             throw new MelkiorError("[Melkior Parse Error] at (" + line +
                 ":" + col + ") near `" + chr + "` => " + message);
+        }
+
+        private Stmt Module()
+        {
+            if (Match(TokenType.Var))
+            {
+                return VarStatement(Previous().type);
+            }
+            if (Match(TokenType.Func))
+            {
+                return FuncStatement();
+            }
+            throw new MelkiorError("Modules can only have function, class and variable declarations");
         }
 
         private Stmt Declaration()
