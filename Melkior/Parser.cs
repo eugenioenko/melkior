@@ -550,8 +550,8 @@ namespace Melkior
                     while (Match(TokenType.Comma));
                     
                 }
-                Token paren = Consume(TokenType.RightParen, "Expected ')' after function arguments");
-                callee = new Expr.Call(callee, paren, args, null);
+                Consume(TokenType.RightParen, "Expected ')' after function arguments");
+                callee = new Expr.Call(callee, args, null);
                 return callee;
             }
             while (Match(TokenType.LeftParen));

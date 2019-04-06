@@ -10,7 +10,7 @@ namespace generator
             new Dictionary<string, string[]> {
                 { "Assign", new string[]{"Token name", "Expr value"}},
                 { "Binary", new string[]{"Expr left", "Token oprtr", "Expr right"}},
-                { "Call", new string[]{"Expr callee", "Token paren", "List<Expr> args", "object thiz"}},
+                { "Call", new string[]{"Expr callee", "List<Expr> args", "object thiz"}},
                 { "Dict", new string[]{"List<Expr> entries"}},
                 { "Get", new string[]{"Expr entity", "Expr key"}},
                 { "Group", new string[]{"Expr expression"}},

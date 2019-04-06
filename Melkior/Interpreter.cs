@@ -586,7 +586,24 @@ namespace Melkior
 
         public Any VisitNewExpr(Expr.New expr)
         {
-            throw new NotImplementedException();
+            Class clazz =(Class)Evaluate(((Expr.Call)expr.constructor).callee);
+            if (!clazz.IsClass())
+            {
+                throw new MelkiorException("new statement must be used with classes. '" + clazz + "' is not a class");
+            }
+            var entity = new Entity(new Dictionary<Any, Any>(), clazz);
+            var constructor = clazz.Get(new String("constructor"));
+            if (constructor.IsFunction())
+            {
+                var args = new List<Any>();
+                foreach(var arg in ((Expr.Call)expr.constructor).args)
+                {
+                    args.Add(Evaluate(arg));
+                }
+                ((Function)constructor).Call(this, entity, args);
+            }
+
+            return entity;
         }
     }
 }

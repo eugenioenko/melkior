@@ -12,6 +12,7 @@ namespace Melkior
         Function,
         Range,
         Class,
+        Entity,
         Debug
     }
 }

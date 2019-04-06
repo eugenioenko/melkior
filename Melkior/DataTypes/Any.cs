@@ -34,7 +34,8 @@ namespace Melkior
             if (IsArray()) return (this as Array).Get(key);
             if (IsDict()) return (this as Dict).Get(key);
             if (IsClass()) return (this as Class).Get(key);
-            throw new MelkiorException(key + " does not exist in" + this);
+            if (IsEntity()) return (this as Entity).Get(key);
+            throw new MelkiorException(key + " does not exist in " + this);
         }
 
         public Any TypeOf()
@@ -80,6 +81,16 @@ namespace Melkior
         public bool IsClass()
         {
             return type == DataType.Class;
+        }
+
+        public bool IsFunction()
+        {
+            return type == DataType.Function;
+        }
+
+        public bool IsEntity()
+        {
+            return type == DataType.Entity;
         }
 
         public void Set(Any key, Any value)

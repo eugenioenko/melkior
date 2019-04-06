@@ -67,14 +67,12 @@ namespace Melkior
         public class Call: Expr
         {
             public Expr callee;
-            public Token paren;
             public List<Expr> args;
             public object thiz;
 
-            public Call(Expr callee, Token paren, List<Expr> args, object thiz)
+            public Call(Expr callee, List<Expr> args, object thiz)
             {
                 this.callee = callee;
-                this.paren = paren;
                 this.args = args;
                 this.thiz = thiz;
             }
