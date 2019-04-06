@@ -11,7 +11,7 @@ namespace Melkior
         Dictionary,
         Function,
         Range,
-        Entity,
+        Class,
         Debug
     }
 }

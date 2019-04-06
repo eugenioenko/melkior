@@ -17,6 +17,7 @@ namespace Melkior
             T VisitLogicalExpr(Logical expr);
             T VisitArrayExpr(Array expr);
             T VisitLiteralExpr(Literal expr);
+            T VisitNewExpr(New expr);
             T VisitRangeExpr(Range expr);
             T VisitSetExpr(Set expr);
             T VisitTernaryExpr(Ternary expr);
@@ -209,6 +210,21 @@ namespace Melkior
             public override T Accept<T>(IVisitor<T> visitor)
             {
                  return visitor.VisitLiteralExpr(this);
+            }
+        }
+
+        public class New: Expr
+        {
+            public Expr constructor;
+
+            public New(Expr constructor)
+            {
+                this.constructor = constructor;
+            }
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                 return visitor.VisitNewExpr(this);
             }
         }
 

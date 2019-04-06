@@ -19,7 +19,7 @@ namespace generator
                 { "Logical", new string[]{"Expr left", "Token oprtr", "Expr right"}},
                 { "Array", new string[]{"List<Expr> values"}},
                 { "Literal", new string[]{"object value", "DataType type"}},
-                // { "New", new string[]{"Expr constructor"}},
+                { "New", new string[]{"Expr constructor"}},
                 // { "Postfix", new string[]{"Token name", "number increment"}},
                 { "Range", new string[]{"Expr start", "Expr end", "Expr step"}},
                 // { "RegEx", new string[]{"RegExp value"}},
@@ -34,7 +34,7 @@ namespace generator
         public static readonly Dictionary<string, string[]> statements =
             new Dictionary<string, string[]> {
                 { "Block", new string[]{"List<Stmt> statements"}},
-                // { "Class", new string[]{"Token name", "Token parent", "List<Function> methods"}},
+                { "Class", new string[]{"Token name", "Token parent", "List<Stmt> methods"}},
                 { "DoWhile", new string[]{"Stmt loop", "Expr condition"}},
                 { "Expression", new string[]{"Expr expression"}},
                 { "Function", new string[]{"Token name", "List<Token> prms", "List<Stmt> body"}},
@@ -60,6 +60,7 @@ namespace generator
             if (className == "Stmt")
             {
                 lines.Add("        public Any result;");
+                lines.Add("        public int line;");
                 lines.Add("");
             }
             lines.Add("        public interface IVisitor<T>");

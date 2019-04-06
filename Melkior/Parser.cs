@@ -26,7 +26,7 @@ namespace Melkior
                 }
                 return statements;
             }
-            catch(MelkiorError e)
+            catch(MelkiorException e)
             {
                 Console.WriteLine(e.message);
                 return null;
@@ -111,7 +111,7 @@ namespace Melkior
             var line = token.line;
             var col = token.column;
             var chr = token.lexeme;
-            throw new MelkiorError("[Melkior Parse Error] at (" + line +
+            throw new MelkiorException("[Melkior Parse Error] at (" + line +
                 ":" + col + ") near `" + chr + "` => " + message);
         }
 
@@ -124,6 +124,10 @@ namespace Melkior
             if (Match(TokenType.Func))
             {
                 return FuncStatement();
+            }
+            if (Match(TokenType.Class))
+            {
+                return ClassStatement();
             }
 
             return Statement();
@@ -143,6 +147,24 @@ namespace Melkior
             Consume(TokenType.Semicolon, "Expected semicolon after a variable initialization");
             var writable = varType == TokenType.Var ? true : false;
             return new Stmt.Var(name, null, initializer, writable).Line(Previous());
+        }
+
+        private Stmt ClassStatement()
+        {
+            Token name = Consume(TokenType.Identifier, "Expected class name after class statement");
+            Token parent = null;
+            if (Match(TokenType.Inherits))
+            {
+                parent = Consume(TokenType.Identifier, "Expected a parent class name after inhertis");
+            }
+            var methods = new List<Stmt>();
+
+            do
+            {
+                methods.Add(FuncStatement());
+            } while (!Match(TokenType.End));
+
+            return new Stmt.Class(name, parent, methods).Line(name);
         }
 
         private Stmt FuncStatement()
@@ -473,9 +495,13 @@ namespace Melkior
                 Expr right = Unary();
                 return  new Expr.Unary(oprtr, right);
             }
-            return Call();
+            return New();
         }
 
+        private Expr New()
+        {
+            return Call();
+        }
         private Expr Call()
         {
             var expr = Primary();
