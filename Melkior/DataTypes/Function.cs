@@ -45,6 +45,15 @@ namespace Melkior
                     funcScope.Define(declaration.prms[i].lexeme, args[i]);
                 }
 
+                int nullArgsCount = declaration.prms.Count - args.Count;
+                if (nullArgsCount > 0)
+                {
+                    for (var i = 0; i < nullArgsCount; ++i)
+                    {
+                        args.Add(new Null());
+                    }
+                }
+
                 if (self.IsEntity())
                 {
                     funcScope.Define("this", self);
