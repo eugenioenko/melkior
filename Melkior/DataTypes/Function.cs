@@ -45,6 +45,11 @@ namespace Melkior
                     funcScope.Define(declaration.prms[i].lexeme, args[i]);
                 }
 
+                if (self.IsEntity())
+                {
+                    funcScope.Define("this", self);
+                }
+
                 return inter.ExecuteFunction(declaration.body, funcScope);
             };
         }

@@ -6,16 +6,15 @@ namespace Melkior
     {
         public Any result;
         public int line;
-
         public Stmt Line(Token token)
         {
             line = token.line;
             return this;
         }
-
         public interface IVisitor<T>
         {
             T VisitBlockStmt(Block stmt);
+            T VisitClassStmt(Class stmt);
             T VisitDoWhileStmt(DoWhile stmt);
             T VisitExpressionStmt(Expression stmt);
             T VisitFunctionStmt(Function stmt);
@@ -42,6 +41,25 @@ namespace Melkior
             public override T Accept<T>(IVisitor<T> visitor)
             {
                  return visitor.VisitBlockStmt(this);
+            }
+        }
+
+        public class Class: Stmt
+        {
+            public Token name;
+            public Token parent;
+            public List<Stmt> methods;
+
+            public Class(Token name, Token parent, List<Stmt> methods)
+            {
+                this.name = name;
+                this.parent = parent;
+                this.methods = methods;
+            }
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                 return visitor.VisitClassStmt(this);
             }
         }
 

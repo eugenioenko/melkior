@@ -103,5 +103,27 @@ func main(args)
     print "TOLOWERCASE".tolower();
     print "a,b,c,d,e,f,g,h".split(",");
     print "the substring should be substring".substring(24);
+
+
+    class ClassName
+        constructor(alpha, gama)
+            print "test constructor";
+            this.property = alpha + gama;
+        end 
+
+        method(alpha, beta)
+            print alpha + beta;
+        end
+    end
+
+    class Child inherits ClassName
+    end
+
+    var instance = new Child("first", "secondd");
+    instance.method("alpha", "omega");
+
+
+
+
     pause
 end

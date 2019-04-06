@@ -32,7 +32,7 @@ namespace Melkior
                     ((Function)main).Call(this, new Null(), new List<Any>() { new String("argument") });
                 }
             }
-            catch (MelkiorError error)
+            catch (MelkiorException error)
             {
                 Console.WriteLine("[Melkior Runtime Error] (line: " + current.line + ") " +
                     "near " + current.ToString());
@@ -65,7 +65,7 @@ namespace Melkior
 
         private void Error(string message)
         {
-            throw new MelkiorError(message);
+            throw new MelkiorException(message);
         }
 
         public Any VisitAssignExpr(Expr.Assign expr)
@@ -110,7 +110,7 @@ namespace Melkior
                 case TokenType.BangEqual:
                     return left != right;
                 default:
-                    throw new MelkiorError("Unexpected binary operator: " + expr.oprtr);
+                    throw new MelkiorException("Unexpected binary operator: " + expr.oprtr);
             }
         }
 
@@ -207,7 +207,7 @@ namespace Melkior
                 case TokenType.Not:
                     return new Boolean(!right.IsTruthy());
                 default:
-                    throw new MelkiorError("Unexpected unary operator " + expr.oprtr);
+                    throw new MelkiorException("Unexpected unary operator " + expr.oprtr);
             }
         }
 
@@ -527,7 +527,7 @@ namespace Melkior
                 }
                 else
                 {
-                    throw new MelkiorError("Step value in range can't be 0");
+                    throw new MelkiorException("Step value in range can't be 0");
                 }
                 return new Any(null, DataType.Null);
             }
@@ -556,6 +556,54 @@ namespace Melkior
                 expr.end != null ? Evaluate(expr.end) : new Null(),
                 expr.step != null ? Evaluate(expr.step) : new Null()
             ));
+        }
+
+        public Any VisitClassStmt(Stmt.Class stmt)
+        {
+            var name = new String(stmt.name.lexeme);
+            Any parent;
+
+            if (stmt.parent == null)
+            {
+                parent = new Null();
+            }
+            else
+            {
+                parent = scope.Get(stmt.parent.lexeme);
+            }
+      
+            var methods = new Dictionary<Any, Any>();
+
+            foreach (var method in stmt.methods)
+            {
+                var func = (Stmt.Function)method;
+                methods.Add(new String(func.name.lexeme), new Function(func, scope));
+            }
+            var clazz = new Class(name, methods, parent);
+            scope.Define(stmt.name.lexeme, clazz);
+            return clazz;
+        }
+
+        public Any VisitNewExpr(Expr.New expr)
+        {
+            Class clazz =(Class)Evaluate(((Expr.Call)expr.constructor).callee);
+            if (!clazz.IsClass())
+            {
+                throw new MelkiorException("new statement must be used with classes. '" + clazz + "' is not a class");
+            }
+            var entity = new Entity(new Dictionary<Any, Any>(), clazz);
+            var constructor = clazz.Get(new String("constructor"));
+            if (constructor.IsFunction())
+            {
+                var args = new List<Any>();
+                foreach(var arg in ((Expr.Call)expr.constructor).args)
+                {
+                    args.Add(Evaluate(arg));
+                }
+                ((Function)constructor).Call(this, entity, args);
+            }
+
+            return entity;
         }
     }
 }

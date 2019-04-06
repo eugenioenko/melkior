@@ -38,7 +38,7 @@ namespace Melkior
                     return Runtime.ArrayMethods[key];
                 }
             }
-            throw new MelkiorError(key + " does not exist in" + this);
+            throw new MelkiorException(key + " does not exist in" + this);
         }
 
         public new void Set(Any key, Any value)
@@ -60,7 +60,7 @@ namespace Melkior
              
             }
 
-            throw new MelkiorError(key + " is not a valid index for array " + this);
+            throw new MelkiorException(key + " is not a valid index for array " + this);
         }
 
         public static String Join(Array array, String separator)

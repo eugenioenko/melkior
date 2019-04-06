@@ -60,8 +60,10 @@
     <Compile Include="DataTypes\Boolean.cs" />
     <Compile Include="DataTypes\Dict.cs" />
     <Compile Include="DataTypes\DataType.cs" />
-    <Compile Include="DataStructures\Error.cs" />
+    <Compile Include="DataStructures\Exception.cs" />
     <Compile Include="DataStructures\Expressions.cs" />
+    <Compile Include="DataTypes\Class.cs" />
+    <Compile Include="DataTypes\Entity.cs" />
     <Compile Include="DataTypes\Function.cs" />
     <Compile Include="DataTypes\Null.cs" />
     <Compile Include="DataTypes\Range.cs" />

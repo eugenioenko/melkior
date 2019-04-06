@@ -29,11 +29,13 @@ namespace Melkior
 
         public Any Get(Any key)
         {
-            if (this is String) return (this as String).Get(key);
-            if (this is Number) return (this as Number).Get(key);
-            if (this is Array) return (this as Array).Get(key);
-            if (this is Dict) return (this as Dict).Get(key);
-            throw new MelkiorError(key + " does not exist in" + this);
+            if (IsString()) return (this as String).Get(key);
+            if (IsNumber()) return (this as Number).Get(key);
+            if (IsArray()) return (this as Array).Get(key);
+            if (IsDict()) return (this as Dict).Get(key);
+            if (IsClass()) return (this as Class).Get(key);
+            if (IsEntity()) return (this as Entity).Get(key);
+            throw new MelkiorException(key + " does not exist in " + this);
         }
 
         public Any TypeOf()
@@ -76,19 +78,44 @@ namespace Melkior
             return type == DataType.Range;
         }
 
+        public bool IsClass()
+        {
+            return type == DataType.Class;
+        }
+
+        public bool IsFunction()
+        {
+            return type == DataType.Function;
+        }
+
+        public bool IsEntity()
+        {
+            return type == DataType.Entity;
+        }
+
         public void Set(Any key, Any value)
         {
-            if (this is Array)
+            if (IsArray())
             {
                 (this as Array).Set(key, value);
                 return;
             }
-            if (this is Dict)
+            if (IsDict())
             {
                 (this as Dict).Set(key, value);
                 return;
             }
-            throw new MelkiorError(key + " does not exist in" + this);
+            if (IsClass())
+            {
+                (this as Class).Set(key, value);
+                return;
+            }
+            if (IsEntity())
+            {
+                (this as Entity).Set(key, value);
+                return;
+            }
+            throw new MelkiorException(key + " cannot be set in" + this);
         }
 
         public static Any operator +(Any left, Any right)
@@ -199,7 +226,7 @@ namespace Melkior
             }
             if (value == null)
             {
-                throw new MelkiorError("Unknown error value Any is null");
+                throw new MelkiorException("Unknown error value Any is null");
             }
             return true;
         }

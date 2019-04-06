@@ -41,7 +41,7 @@ namespace Melkior
                 return Runtime.StringMethods[key];
             }
 
-            throw new MelkiorError(key + " does not exist in" + this);
+            throw new MelkiorException(key + " does not exist in" + this);
         }
 
         public static Number Length(String str)

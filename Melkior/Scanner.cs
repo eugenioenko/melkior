@@ -38,7 +38,7 @@ namespace Melkior
 
                 return tokens;
             }
-            catch (MelkiorError error)
+            catch (MelkiorException error)
             {
                 Console.WriteLine(error);
             }
@@ -145,7 +145,7 @@ namespace Melkior
 
         private void Error(string message)
         {
-            throw new MelkiorError("[Scan Error]=> (" + line + "): " + message);
+            throw new MelkiorException("[Scan Error]=> (" + line + "): " + message);
         }
 
         private void Number()
