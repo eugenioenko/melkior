@@ -110,7 +110,12 @@ namespace Melkior
                 (this as Class).Set(key, value);
                 return;
             }
-            throw new MelkiorException(key + " does not exist in" + this);
+            if (IsEntity())
+            {
+                (this as Entity).Set(key, value);
+                return;
+            }
+            throw new MelkiorException(key + " cannot be set in" + this);
         }
 
         public static Any operator +(Any left, Any right)

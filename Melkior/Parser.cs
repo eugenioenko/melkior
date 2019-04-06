@@ -159,12 +159,19 @@ namespace Melkior
             }
             var methods = new List<Stmt>();
 
+            var clazz = new Stmt.Class(name, parent, methods).Line(name);
+
+            if (Match(TokenType.End))
+            {
+                return clazz;
+            }
+
             do
             {
                 methods.Add(FuncStatement());
             } while (!Match(TokenType.End));
 
-            return new Stmt.Class(name, parent, methods).Line(name);
+            return clazz;
         }
 
         private Stmt FuncStatement()

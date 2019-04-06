@@ -25,7 +25,7 @@ namespace Melkior
             }
             if (parent.IsClass())
             {
-                return parent.Get(name);
+                return parent.Get(key);
             }
             return new Null();
         }
