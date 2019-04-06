@@ -6,11 +6,12 @@ namespace Melkior
     {
         public Any result;
         public int line;
-        public Stmt Line(Token token)
-        {
-            line = token.line;
-            return this;
-        }
+public Stmt Line(Token token)
+{
+    line = token.line;
+    return this;
+}
+
         public interface IVisitor<T>
         {
             T VisitBlockStmt(Block stmt);

@@ -132,7 +132,14 @@ namespace Melkior
             Any self = null;
             if (expr.callee is Expr.Get)
             {
-                self = Evaluate((expr.callee as Expr.Get).entity);
+                if ((expr.callee as Expr.Get).entity is Expr.Base)
+                {
+                    self = scope.Get("this");
+                }
+                else
+                {
+                    self = Evaluate((expr.callee as Expr.Get).entity);
+                }
             }
 
             // todo add aritiy check
@@ -604,6 +611,25 @@ namespace Melkior
             }
 
             return entity;
+        }
+
+        public Any VisitBaseExpr(Expr.Base expr)
+        {
+            var self = scope.Get("this");
+
+            if (!self.IsEntity())
+            {
+                throw new MelkiorException("base expression can be used only inside methods");
+            }
+
+            var clazz = ((Entity)self).constructor;
+            var parent = ((Class)clazz).parent;
+            if (parent.IsNull())
+            {
+                throw new MelkiorException("Class " + clazz + "is not inherited from parent");
+            }
+
+            return parent;
         }
     }
 }

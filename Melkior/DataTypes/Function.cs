@@ -40,10 +40,6 @@ namespace Melkior
             Call = (Interpreter inter, Any self, List<Any> args) =>
             {
                 Scope funcScope = new Scope(closure);
-                for (var i = 0; i < declaration.prms.Count; ++i)
-                {
-                    funcScope.Define(declaration.prms[i].lexeme, args[i]);
-                }
 
                 int nullArgsCount = declaration.prms.Count - args.Count;
                 if (nullArgsCount > 0)
@@ -52,6 +48,11 @@ namespace Melkior
                     {
                         args.Add(new Null());
                     }
+                }
+
+                for (var i = 0; i < declaration.prms.Count; ++i)
+                {
+                    funcScope.Define(declaration.prms[i].lexeme, args[i]);
                 }
 
                 if (self.IsEntity())

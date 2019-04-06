@@ -122,6 +122,33 @@ func main(args)
     var instance = new Child("first", "secondd");
     instance.method("alpha", "omega");
 
+     class Person
+        constructor(name)
+            this.name = name;
+        end 
+
+        method()
+            print this.name + " says hi";
+        end
+    end
+
+    class Student inherits Person
+
+        constructor(name, grade)
+            base.constructor(name);
+            this.grade = grade;
+        end
+
+        method()
+            base.constructor("Not John");
+            base.method();
+            print "and also is in grade " + this.grade;
+        end
+
+    end
+
+    var obj = new Student("Jhon", 22);
+    obj.method();
 
 
 
