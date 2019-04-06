@@ -193,7 +193,3 @@ print ChildClass.static("one", "two");
 
 Execute Melkior from the console passing the source code filename as argument.
 Melkior accepts any file extension, currently there is a small demo in the root folder of the project `DemoCode.mel`
-
-
-#### thanks and kudos
-to @munificent for publishing the book on [lox interpreter](http://www.craftinginterpreters.com/)
