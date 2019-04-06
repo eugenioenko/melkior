@@ -151,7 +151,7 @@ Semicolons are required after each
 
 ### classes
 Classes are defined by using the reserved keyword "class" folowed by a class name.
-To inherti a class from another use "inherits" keyword after class name definition.
+To inherit a class from another use "inherits" keyword after class name definition.
 Class body consist of function definitions;
 To create a new instance use "new" keyword folowed by the Class name and arugment list to call the constructor function.
 ```
