@@ -500,8 +500,15 @@ namespace Melkior
 
         private Expr New()
         {
+            if (Match(TokenType.New))
+            {
+                var constructor = Call();
+                return new Expr.New(constructor);
+            }
+
             return Call();
         }
+
         private Expr Call()
         {
             var expr = Primary();

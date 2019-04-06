@@ -583,5 +583,10 @@ namespace Melkior
             scope.Define(stmt.name.lexeme, clazz);
             return clazz;
         }
+
+        public Any VisitNewExpr(Expr.New expr)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
