@@ -115,7 +115,7 @@ namespace Melkior
                 (this as Entity).Set(key, value);
                 return;
             }
-            throw new MelkiorException(key + " cannot be set in" + this);
+            throw new MelkiorException(key + " cannot be set in " + this);
         }
 
         public static Any operator +(Any left, Any right)

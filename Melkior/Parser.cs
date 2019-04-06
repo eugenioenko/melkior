@@ -599,6 +599,12 @@ namespace Melkior
             {
                 return new Expr.Literal(Previous().literal, DataType.String);
             }
+
+            if (Match(TokenType.Base))
+            {
+                return new Expr.Base();
+            }
+
             if (Match(TokenType.LeftBracket))
             {
                 return DoArray();

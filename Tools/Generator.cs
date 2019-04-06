@@ -10,7 +10,7 @@ namespace generator
             new Dictionary<string, string[]> {
                 { "Assign", new string[]{"Token name", "Expr value"}},
                 { "Binary", new string[]{"Expr left", "Token oprtr", "Expr right"}},
-                { "Call", new string[]{"Expr callee", "List<Expr> args", "object thiz"}},
+                { "Call", new string[]{"Expr callee", "List<Expr> args", "object self"}},
                 { "Dict", new string[]{"List<Expr> entries"}},
                 { "Get", new string[]{"Expr entity", "Expr key"}},
                 { "Group", new string[]{"Expr expression"}},
@@ -24,7 +24,7 @@ namespace generator
                 { "Range", new string[]{"Expr start", "Expr end", "Expr step"}},
                 // { "RegEx", new string[]{"RegExp value"}},
                 { "Set", new string[]{"Expr entity", "Expr key", "Expr value"}},
-                // { "Super", new string[]{"List<Token> index", "List<Expr> args"}},
+                { "Base", new String[]{ }},
                 { "Ternary", new string[]{"Expr condition", "Expr thenExpr", "Expr elseExpr"}},
                 { "Unary",  new string[]{ "Token oprtr", "Expr right"}},
                 { "Variable", new string[]{"Token name"}},
@@ -61,6 +61,11 @@ namespace generator
             {
                 lines.Add("        public Any result;");
                 lines.Add("        public int line;");
+                lines.Add("public Stmt Line(Token token)");
+                lines.Add("{");
+                lines.Add("    line = token.line;");
+                lines.Add("    return this;");
+                lines.Add("}");
                 lines.Add("");
             }
             lines.Add("        public interface IVisitor<T>");

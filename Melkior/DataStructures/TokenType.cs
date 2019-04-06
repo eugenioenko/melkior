@@ -66,6 +66,7 @@ namespace Melkior
         Nop,
         Var,
         End,
+        Base,
         Foreach,
         New,
         Pause,

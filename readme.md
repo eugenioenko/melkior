@@ -149,6 +149,46 @@ Semicolons are required after each
 - var statement
 - print statement
 
+### classes
+Classes are defined by using the reserved keyword "class" folowed by a class name.
+To inherti a class from another use "inherits" keyword after class name definition.
+Class body consist of function definitions;
+To create a new instance use "new" keyword folowed by the Class name and arugment list to call the constructor function.
+```
+class ParentClass
+    
+    constructor(alpha) 
+        this.alpha = alpha;
+    end
+
+    method()
+        print this.apha;
+    end
+
+end
+
+class ChildClass inherits ParentClass
+    
+    constructor(alpha, beta)
+        base.constructor(alpha); 
+        this.beta = beta;
+    end
+
+    method()
+        base.method();
+        print this.beta;
+    end
+
+    static(alpha, beta)
+        return alpha + beta;
+    end
+
+end
+
+var parentInstance = new ParentClass("alpha");
+var childInstance = new ChildClass("beta", "gama");
+print ChildClass.static("one", "two");
+```
 ### running the interpreter
 
 Execute Melkior from the console passing the source code filename as argument.
