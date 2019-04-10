@@ -17,7 +17,6 @@ namespace Melkior
             this.tokens = tokens;
             current = 0;
             var statements = new List<Stmt>();
-
             try
             {
                 while (!Eof())
@@ -123,7 +122,7 @@ namespace Melkior
             }
             if (Match(TokenType.Func))
             {
-                return FuncStatement();
+                return FuncStatement(FunctionType.Function);
             }
             if (Match(TokenType.Class))
             {
@@ -168,20 +167,20 @@ namespace Melkior
 
             do
             {
-                methods.Add(FuncStatement());
+                methods.Add(FuncStatement(FunctionType.Method));
             } while (!Match(TokenType.End));
 
             return clazz;
         }
 
-        private Stmt FuncStatement()
+        private Stmt FuncStatement(FunctionType type)
         {
             Token name = Consume(TokenType.Identifier, "Expected a function name after func keyword");
             List<Token> parameters = FuncParameters();
             Discard(TokenType.Do, "Unexpected 'do' at the start of function body");
             List<Stmt> body = Block(TokenType.End);
             Consume(TokenType.End, "Expected 'end' at the end of a function");
-            return new Stmt.Function(name, parameters, body).Line(name);
+            return new Stmt.Function(name, parameters, body, type).Line(name);
         }
 
         private List<Token> FuncParameters()
@@ -381,7 +380,7 @@ namespace Melkior
                             oprtr, value
                         );
                     }
-                    return new Expr.Assign((expr as Expr.Variable).name, value);
+                    return new Expr.Assign((expr as Expr.Variable).name, value, oprtr);
                 } 
                 else if (expr is Expr.Get)
                 {
@@ -391,7 +390,7 @@ namespace Melkior
                             new Expr.Get((expr as Expr.Get).entity, (expr as Expr.Get).key), 
                             oprtr, value);
                     }
-                    return new Expr.Set((expr as Expr.Get).entity, (expr as Expr.Get).key, value);
+                    return new Expr.Set((expr as Expr.Get).entity, (expr as Expr.Get).key, value, oprtr);
                 }
             }
             return expr;
@@ -666,9 +665,9 @@ namespace Melkior
                 if (Match(TokenType.String, TokenType.Identifier))
                 {
                     Token key = Previous();
-                    Consume(TokenType.Colon, "Expected ':' colon after member");
+                    var colon = Consume(TokenType.Colon, "Expected ':' colon after member");
                     var value = Expression();
-                    entries.Add(new Expr.Set(null, new Expr.Key(key), value));
+                    entries.Add(new Expr.Set(null, new Expr.Key(key), value, colon));
                 }
                 else
                 {
@@ -704,7 +703,7 @@ namespace Melkior
                 Consume(TokenType.Arrow, "Expected arrow '=>' after lambda parameters");
                 body.Add(new Stmt.Return(Expression()));
             }
-            var function = new Stmt.Function(lambda, parameters, body);
+            var function = new Stmt.Function(lambda, parameters, body, FunctionType.Lambda);
             return new Expr.Lambda(function);
         }
 

@@ -38,9 +38,18 @@ namespace Melkior
                 HelpAndVersion();
                 return;
             }
+     
             string source = File.ReadAllText(filename);
 
-            Execute(source);
+            var options = new List<string>(args);
+            if (options.IndexOf("--t") != -1)
+            {
+                Transpile(source, filename + ".js");
+            }
+            else
+            {
+                Execute(source);
+            }
         }
 
         static void HelpAndVersion()
@@ -77,9 +86,32 @@ namespace Melkior
             {
                 return null;
             }
+
             Interpreter interpreter = new Interpreter();
             var result = interpreter.Interpret(statements);
             return result;
+        }
+
+        public static void Transpile(string source, string filename)
+        {
+            Scanner scanner = new Scanner();
+            List<Token> tokens = scanner.Scan(source);
+            if (tokens == null)
+            {
+                return;
+            }
+
+            Parser parser = new Parser();
+            var statements = parser.Parse(tokens);
+
+            if (statements == null)
+            {
+                return;
+            }
+
+            Transpiler transpiler = new Transpiler();
+            var transpiled = transpiler.Transpile(statements);
+            File.WriteAllText(filename, transpiled);
         }
     }
 }

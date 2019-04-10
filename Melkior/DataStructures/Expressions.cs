@@ -24,7 +24,6 @@ namespace Melkior
             T VisitTernaryExpr(Ternary expr);
             T VisitUnaryExpr(Unary expr);
             T VisitVariableExpr(Variable expr);
-            T VisitStringExpr(String expr);
         }
 
         public abstract T Accept<T>(IVisitor<T> visitor);
@@ -33,11 +32,13 @@ namespace Melkior
         {
             public Token name;
             public Expr value;
+            public Token oprtr;
 
-            public Assign(Token name, Expr value)
+            public Assign(Token name, Expr value, Token oprtr)
             {
                 this.name = name;
                 this.value = value;
+                this.oprtr = oprtr;
             }
 
             public override T Accept<T>(IVisitor<T> visitor)
@@ -251,12 +252,14 @@ namespace Melkior
             public Expr entity;
             public Expr key;
             public Expr value;
+            public Token oprtr;
 
-            public Set(Expr entity, Expr key, Expr value)
+            public Set(Expr entity, Expr key, Expr value, Token oprtr)
             {
                 this.entity = entity;
                 this.key = key;
                 this.value = value;
+                this.oprtr = oprtr;
             }
 
             public override T Accept<T>(IVisitor<T> visitor)
@@ -326,21 +329,6 @@ namespace Melkior
             public override T Accept<T>(IVisitor<T> visitor)
             {
                  return visitor.VisitVariableExpr(this);
-            }
-        }
-
-        public class String: Expr
-        {
-            public string value;
-
-            public String(string value)
-            {
-                this.value = value;
-            }
-
-            public override T Accept<T>(IVisitor<T> visitor)
-            {
-                 return visitor.VisitStringExpr(this);
             }
         }
 

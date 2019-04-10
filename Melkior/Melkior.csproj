@@ -70,6 +70,7 @@
     <Compile Include="Interpreter.cs" />
     <Compile Include="DataTypes\Any.cs" />
     <Compile Include="DataTypes\Number.cs" />
+    <Compile Include="Transpiler.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="DataStructures\Prototype.cs" />
     <Compile Include="DataStructures\Return.cs" />

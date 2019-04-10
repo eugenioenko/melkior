@@ -101,12 +101,14 @@ public Stmt Line(Token token)
             public Token name;
             public List<Token> prms;
             public List<Stmt> body;
+            public FunctionType type;
 
-            public Function(Token name, List<Token> prms, List<Stmt> body)
+            public Function(Token name, List<Token> prms, List<Stmt> body, FunctionType type)
             {
                 this.name = name;
                 this.prms = prms;
                 this.body = body;
+                this.type = type;
             }
 
             public override T Accept<T>(IVisitor<T> visitor)

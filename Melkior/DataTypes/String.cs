@@ -10,7 +10,6 @@ namespace Melkior
     {
         public String(string value) : base(value, DataType.String) {
             this.value = value;
-
         }
 
         public new Any Get(Any key)
