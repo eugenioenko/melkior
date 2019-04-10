@@ -8,7 +8,7 @@ namespace generator
     {
         public static readonly Dictionary<string, string[]> expressions =
             new Dictionary<string, string[]> {
-                { "Assign", new string[]{"Token name", "Expr value"}},
+                { "Assign", new string[]{"Token name", "Expr value", "Token oprtr" }},
                 { "Binary", new string[]{"Expr left", "Token oprtr", "Expr right"}},
                 { "Call", new string[]{"Expr callee", "List<Expr> args", "object self"}},
                 { "Dict", new string[]{"List<Expr> entries"}},
@@ -20,15 +20,13 @@ namespace generator
                 { "Array", new string[]{"List<Expr> values"}},
                 { "Literal", new string[]{"object value", "DataType type"}},
                 { "New", new string[]{"Expr constructor"}},
-                // { "Postfix", new string[]{"Token name", "number increment"}},
                 { "Range", new string[]{"Expr start", "Expr end", "Expr step"}},
                 // { "RegEx", new string[]{"RegExp value"}},
-                { "Set", new string[]{"Expr entity", "Expr key", "Expr value"}},
+                { "Set", new string[]{"Expr entity", "Expr key", "Expr value", "Token oprtr"}},
                 { "Base", new String[]{ }},
                 { "Ternary", new string[]{"Expr condition", "Expr thenExpr", "Expr elseExpr"}},
                 { "Unary",  new string[]{ "Token oprtr", "Expr right"}},
-                { "Variable", new string[]{"Token name"}},
-                { "String", new string[]{"string value"}}
+                { "Variable", new string[]{"Token name"}}
         };
 
         public static readonly Dictionary<string, string[]> statements =
@@ -37,7 +35,7 @@ namespace generator
                 { "Class", new string[]{"Token name", "Token parent", "List<Stmt> methods"}},
                 { "DoWhile", new string[]{"Stmt loop", "Expr condition"}},
                 { "Expression", new string[]{"Expr expression"}},
-                { "Function", new string[]{"Token name", "List<Token> prms", "List<Stmt> body"}},
+                { "Function", new string[]{"Token name", "List<Token> prms", "List<Stmt> body", "FunctionType type"}},
                 { "If", new string[]{"Expr condition", "Stmt thenStmt", "Stmt elseStmt"}},
                 { "Print", new string[]{"Expr expression"}},
                 { "Pause", new string[]{}},

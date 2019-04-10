@@ -224,11 +224,6 @@ namespace Melkior
             return data;
         }
 
-        public Any VisitStringExpr(Expr.String expr)
-        {
-            return new String(expr.value);
-        }
-
         public Any VisitBlockStmt(Stmt.Block stmt)
         {
             return ExecuteBlock(stmt.statements, new Scope(scope));

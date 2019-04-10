@@ -4,6 +4,11 @@ using System.Text;
 
 namespace Melkior
 {
+    public enum FunctionType {
+        Function,
+        Method,
+        Lambda
+    }
 
     delegate Any FunctionCall(Interpreter inter, Any self, List<Any> args);
 
