@@ -1,6 +1,7 @@
 
 ##  Melkior interpreter
-This is a very early work in progress of an interpreter writen in c# of a scripting language somewhat related to lua/python family.
+This is a work in progress of an interpreter writen in c# of a scripting language somewhat related to lua/python family.
+This project also includes a transpiler of melkior language into javavscript.
 
 ### variable definition
 ```

@@ -187,7 +187,7 @@ namespace Melkior
 
         public string VisitForeachStmt(Stmt.Foreach stmt)
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public string VisitFunctionStmt(Stmt.Function stmt)
@@ -200,11 +200,12 @@ namespace Melkior
             function += stmt.name.lexeme;
             function += "(" + string.Join(", ", stmt.prms.Select(prm => prm.lexeme));
             function += ") " + OpenScope();
+            var body = new List<string>();
             foreach (var statement in stmt.body)
             {
-                function += Indentation() + Execute(statement);
+               body.Add(Indentation() + Execute(statement));
             }
-            function += eol + CloseScope();
+            function += string.Join(eol, body) + eol + CloseScope();
             return function;
         }
 
@@ -212,7 +213,7 @@ namespace Melkior
         {
             var entity = Evaluate(expr.entity);
             var key = Evaluate(expr.key);
-            return entity + '.' + key;
+            return entity + '[' + key + ']';
         }
 
         public string VisitGroupExpr(Expr.Group expr)
@@ -298,7 +299,7 @@ namespace Melkior
 
         public string VisitPauseStmt(Stmt.Pause stmt)
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public string VisitPrintStmt(Stmt.Print stmt)
@@ -308,7 +309,7 @@ namespace Melkior
 
         public string VisitRangeExpr(Expr.Range expr)
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public string VisitReturnStmt(Stmt.Return stmt)
@@ -321,7 +322,7 @@ namespace Melkior
             var entity = Evaluate(expr.entity);
             var value = Evaluate(expr.value);
             var key = Evaluate(expr.key);
-            return entity + "." + key + " = " + value;
+            return entity + "[" + key + "] = " + value;
         }
 
         public string VisitTernaryExpr(Expr.Ternary expr)

@@ -56,10 +56,11 @@ namespace Melkior
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Melkior interpreter version 0.8");
-            Console.WriteLine("usage: melkior [source] [arguments]");
+            Console.WriteLine("usage: melkior [source] [options] [arguments]");
             Console.WriteLine("");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("source: the filename of the sourcecode to be executed");
+            Console.WriteLine("options: --t (transpile to javascript)");
             Console.WriteLine("arguments: an array list of arguments to be passed to the main/entry function");
             Console.WriteLine("example: melkior source_code.mel ['first argument', 123]");
             Console.WriteLine("Current Stack Size {0}Kb", GetThreadStackSize());
