@@ -1,6 +1,7 @@
 
 ##  Melkior interpreter
-This is a very early work in progress of an interpreter writen in c# of a scripting language somewhat related to lua/python family.
+This is a work in progress of an interpreter writen in c# of a scripting language somewhat related to lua/python family.
+This project also includes a transpiler of melkior language into javavscript.
 
 ### variable definition
 ```
@@ -189,7 +190,33 @@ var parentInstance = new ParentClass("alpha");
 var childInstance = new ChildClass("beta", "gama");
 print ChildClass.static("one", "two");
 ```
-### running the interpreter
 
+
+## running the interpreter
 Execute Melkior from the console passing the source code filename as argument.
 Melkior accepts any file extension, currently there is a small demo in the root folder of the project `DemoCode.mel`
+```
+Melkior.exe source_code.mel
+Melkior.exe source_code.mel
+```
+
+### passing arguments from command line
+It is possible to pass arugments from command line, just append them after the source code filename.
+If a `main` function is defined in the source code, Melkior will execute the funcion and pass the command line argumetns as arguments
+```
+Melkior.exe source.mel argument_1 argument_2 argument_3
+```
+And in the source code
+```
+func main(args)
+    args[0] == "argument_1";
+    args[1] == "argument_2";
+end
+```
+
+## transpiling to Javascript
+It is possible to transpile melkior source code into javascript. It can be done through the cli with `--t` argument.
+```
+Melkior.exe source.mel --t
+```
+Melkior will create a new sourcefile with javascript syntaxis by apending `.js` to the orignal filename

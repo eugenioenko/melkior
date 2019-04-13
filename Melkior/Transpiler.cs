@@ -8,6 +8,9 @@ namespace Melkior
     class Transpiler : Expr.IVisitor<string>, Stmt.IVisitor<string>
     {
         public List<string> transpiled;
+        private int spacing = 4;
+        private int indent = 0;
+        private string eol = "\n";
 
         public Transpiler()
         {
@@ -42,7 +45,7 @@ namespace Melkior
 
                 return null;
             }
-            return string.Join("\n", transpiled);
+            return string.Join(eol, transpiled) + eol;
         }
 
         private string Evaluate(Expr expr)
@@ -59,6 +62,27 @@ namespace Melkior
         private void Error(string message)
         {
             throw new MelkiorException(message);
+        }
+
+        private string OpenScope()
+        {
+            indent += 1;
+            return "{" + eol;
+        }
+
+        private string CloseScope()
+        {
+            indent -= 1;
+            if (indent < 0)
+            {
+                indent = 0;
+            }
+            return Indentation() + "}";
+        }
+
+        private string Indentation()
+        {
+            return new string(' ', indent * spacing);
         }
 
         public string VisitArrayExpr(Expr.Array expr)
@@ -98,13 +122,15 @@ namespace Melkior
         public string VisitBlockStmt(Stmt.Block stmt)
         {
             var statements = new List<string>();
-
+            var block = "";
+            block += OpenScope();
             foreach(var statement in stmt.statements)
             {
-                statements.Add(Execute(statement));
+                statements.Add(Indentation() + Execute(statement));
             }
-
-            return '{' + string.Join("\n", statements) + '}';
+            block += string.Join(eol, statements);
+            block += eol + CloseScope();
+            return block;
         }
 
         public string VisitCallExpr(Expr.Call expr)
@@ -127,12 +153,12 @@ namespace Melkior
             {
                 result += " extends " + stmt.parent.lexeme;
             }
-            result += '{';
+            result += " " + OpenScope();
             foreach(var method in stmt.methods)
             {
-                result += Execute(method);
+                result += Indentation() + Execute(method) + eol;
             }
-            result += '}';
+            result += CloseScope() + eol;
             return result;
         }
 
@@ -161,32 +187,33 @@ namespace Melkior
 
         public string VisitForeachStmt(Stmt.Foreach stmt)
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public string VisitFunctionStmt(Stmt.Function stmt)
         {
-            var result = "";
+            var function = "";
             if (stmt.type == FunctionType.Function)
             {
-                result += "function ";
+                function += "function ";
             }
-            result += stmt.name.lexeme;
-            result += "(" + string.Join(", ", stmt.prms.Select(prm => prm.lexeme));
-            result += ") {";
+            function += stmt.name.lexeme;
+            function += "(" + string.Join(", ", stmt.prms.Select(prm => prm.lexeme));
+            function += ") " + OpenScope();
+            var body = new List<string>();
             foreach (var statement in stmt.body)
             {
-                result += Execute(statement);
+               body.Add(Indentation() + Execute(statement));
             }
-            result += '}';
-            return result;
+            function += string.Join(eol, body) + eol + CloseScope();
+            return function;
         }
 
         public string VisitGetExpr(Expr.Get expr)
         {
             var entity = Evaluate(expr.entity);
             var key = Evaluate(expr.key);
-            return entity + '.' + key;
+            return entity + '[' + key + ']';
         }
 
         public string VisitGroupExpr(Expr.Group expr)
@@ -213,7 +240,11 @@ namespace Melkior
 
         public string VisitLambdaExpr(Expr.Lambda expr)
         {
-            throw new NotImplementedException();
+            var lambda = (Stmt.Function)expr.lambda;
+
+            var result = '(' + string.Join(", ", lambda.prms.Select(prm => prm.lexeme)) + ") => {";
+            result += Execute(lambda.body[0]) + '}';
+            return result;
         }
 
         public string VisitLiteralExpr(Expr.Literal expr)
@@ -268,7 +299,7 @@ namespace Melkior
 
         public string VisitPauseStmt(Stmt.Pause stmt)
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public string VisitPrintStmt(Stmt.Print stmt)
@@ -278,7 +309,7 @@ namespace Melkior
 
         public string VisitRangeExpr(Expr.Range expr)
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public string VisitReturnStmt(Stmt.Return stmt)
@@ -291,7 +322,7 @@ namespace Melkior
             var entity = Evaluate(expr.entity);
             var value = Evaluate(expr.value);
             var key = Evaluate(expr.key);
-            return entity + "." + key + " = " + value;
+            return entity + "[" + key + "] = " + value;
         }
 
         public string VisitTernaryExpr(Expr.Ternary expr)
@@ -329,7 +360,7 @@ namespace Melkior
 
         public string VisitWhileStmt(Stmt.While stmt)
         {
-            return "while (" + Evaluate(stmt.condition) + ")" + Execute(stmt.loop);
+            return "while (" + Evaluate(stmt.condition) + ") " + Execute(stmt.loop);
         }
     }
 }
