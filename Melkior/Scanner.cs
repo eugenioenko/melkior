@@ -44,7 +44,7 @@ namespace Melkior
             }
             catch (Exception)
             {
-                Console.WriteLine("[Unhandeled Scan Error] => at " + line + ":" + column);
+                Console.WriteLine($"[Unhandeled Scan Error] => at {line}:{column}");
             }
 
             return null;
@@ -145,7 +145,7 @@ namespace Melkior
 
         private void Error(string message)
         {
-            throw new MelkiorException("[Scan Error]=> (" + line + "): " + message);
+            throw new MelkiorException($"[Scan Error]=> ({line}): {message}");
         }
 
         private void Number()
@@ -263,7 +263,7 @@ namespace Melkior
                     }
                     else
                     {
-                        Error("Unexpected character: " + chr);
+                        Error($"Unexpected character: '{chr}'");
                     }
                     break;
             }

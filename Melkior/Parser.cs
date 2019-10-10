@@ -32,7 +32,7 @@ namespace Melkior
             }
             catch(Exception)
             {
-                Console.WriteLine("[Unhandeled Parse Error] => at " + Peek());
+                Console.WriteLine("[Unhandeled Parse Error] => at {0}", Peek());
                 return null;
             }
         }
@@ -110,8 +110,7 @@ namespace Melkior
             var line = token.line;
             var col = token.column;
             var chr = token.lexeme;
-            throw new MelkiorException("[Melkior Parse Error] at (" + line +
-                ":" + col + ") near `" + chr + "` => " + message);
+            throw new MelkiorException($"[Melkior Parse Error] at ({line}:${col}) near '{chr}' => {message}");
         }
 
         private Stmt Declaration()
@@ -565,7 +564,7 @@ namespace Melkior
 
         private Expr DictionaryGet(Expr expr)
         {
-            Token name = Consume(TokenType.Identifier, "Expected a property name after '.'");
+            Token name = Consume(TokenType.Identifier, "Expected a property name after period '.'");
             return new Expr.Get(expr, new Expr.Key(name));
         }
 
