@@ -612,7 +612,7 @@ namespace Melkior
         {
             var self = scope.Get("this");
 
-            if (!self.IsEntity())
+            if (self is null || !self.IsEntity())
             {
                 throw new MelkiorException("base expression can be used only inside methods");
             }

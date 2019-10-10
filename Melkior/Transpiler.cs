@@ -31,16 +31,14 @@ namespace Melkior
             }
             catch (MelkiorException error)
             {
-                Console.WriteLine("[Melkior Runtime Error] (line: " + current.line + ") " +
-                    "near " + current.ToString());
+                Console.WriteLine($"[Melkior Runtime Error] (line: {current.line}) near {current.ToString()}");
                 Console.WriteLine(error.message);
                 return null;
 
             }
             catch (Exception e)
             {
-                Console.WriteLine("[Melkior Unhandeled Runtime Error] (line: " + current.line +
-                    ") near " + current.ToString());
+                Console.WriteLine("[Melkior Unhandeled Runtime Error] (line: {current.line}) near {current.ToString()}");
                 Console.WriteLine(e.Message);
 
                 return null;
@@ -213,7 +211,7 @@ namespace Melkior
         {
             var entity = Evaluate(expr.entity);
             var key = Evaluate(expr.key);
-            return entity + '[' + key + ']';
+            return entity + '.' + key;
         }
 
         public string VisitGroupExpr(Expr.Group expr)
@@ -322,7 +320,7 @@ namespace Melkior
             var entity = Evaluate(expr.entity);
             var value = Evaluate(expr.value);
             var key = Evaluate(expr.key);
-            return entity + "[" + key + "] = " + value;
+            return entity + "." + key + " = " + value;
         }
 
         public string VisitTernaryExpr(Expr.Ternary expr)

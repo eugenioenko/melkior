@@ -224,7 +224,7 @@ namespace Melkior
             {
                 return false;
             }
-            if (value == null)
+            if (value is null)
             {
                 throw new MelkiorException("Unknown error value Any is null");
             }
