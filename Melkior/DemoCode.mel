@@ -1,3 +1,4 @@
+// this is a demo of melkior current code
 // variable definition
 func main(args)
     print args;
@@ -154,7 +155,7 @@ func main(args)
         return a + b;
     end
 
-    print (sample("hello", "world")).reverse();
+    print (sample("hello", "world1")).reverse(); 
 
     pause
 end

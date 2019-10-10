@@ -1,3 +1,5 @@
+// this is a demo of melkior current code
+// the extension is "lua" to trick the ide to show syntax highlight
 // variable definition
 func main(args)
     print args;
@@ -140,7 +142,6 @@ func main(args)
         end
 
         method()
-            base.constructor("Not John");
             base.method();
             print "and also is in grade " + this.grade;
         end
@@ -151,6 +152,11 @@ func main(args)
     obj.method();
 
 
+    func sample(a, b)
+        return a + b;
+    end
+
+    print (sample("hello", "world1")).reverse(); 
 
     pause
 end
